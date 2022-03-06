@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { myLogin, myGetUserInfo, myLogout } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -28,14 +28,15 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
+
+  myLogin({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      myLogin({ username: username.trim(), password: password }).then(res => {
+        const { data } = res
+        commit('SET_TOKEN', data)
+        // cookie的token
+        setToken(data)
         resolve()
       }).catch(error => {
         reject(error)
@@ -43,31 +44,27 @@ const actions = {
     })
   },
 
-  // get user info
-  getInfo({ commit, state }) {
+  myGetUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          return reject('Verification failed, please Login again.')
+      myGetUserInfo(state.token).then(res => {
+        if (!res.data) {
+          return reject('拉取用户信息失败，请重新登录。')
         }
+        alert(res.data.username)
+        const { username, avatar } = res.data
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
+        commit('SET_NAME', username)
         commit('SET_AVATAR', avatar)
-        resolve(data)
+        resolve(res.data)
       }).catch(error => {
         reject(error)
       })
     })
   },
 
-  // user logout
-  logout({ commit, state }) {
+  myLogout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      myLogout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
