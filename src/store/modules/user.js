@@ -34,8 +34,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       myLogin({ username: username.trim(), password: password }).then(res => {
         const { data } = res
+        // vue中的store全局变量里扔一个token
         commit('SET_TOKEN', data)
-        // cookie的token
+        // 给cookie中扔一个token
         setToken(data)
         resolve()
       }).catch(error => {
@@ -50,7 +51,6 @@ const actions = {
         if (!res.data) {
           return reject('拉取用户信息失败，请重新登录。')
         }
-        alert(res.data.username)
         const { username, avatar } = res.data
 
         commit('SET_NAME', username)
