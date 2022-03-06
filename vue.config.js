@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title// page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -37,6 +37,15 @@ module.exports = {
       errors: true
     },
     before: require('./mock/mock-server.js')
+  },
+  proxy: {
+    '/api': { // alias
+      target: 'http://localhost:8080', // 要访问的路径
+      changOrigin: true, // 允许跨域
+      pathRewrite: {
+        '^/api': '' // 请求的时候使用这个api就可以
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -87,7 +96,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
