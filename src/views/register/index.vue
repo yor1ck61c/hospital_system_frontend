@@ -275,35 +275,40 @@ export default {
           // 播放加载动画
           this.loading = true
           register(that.registerForm).then((res) => {
-            if (res.data != null && res.data.code === 1) {
-              // 注册成功
-              Message.success({
-                message: res.data.msg
-              })
-              that.backToLoginPageWithData(that.registerForm)
-            } else if (res.data != null && res.data.code === 502) {
+            const result = res.data
+            // 返回结果不为空
+            if (result != null) {
+              if (result.code === 20000) {
+                // 注册成功
+                Message.success({
+                  message: result.msg
+                })
+                that.backToLoginPageWithData(result.data)
+              }
+              if (res.data.code === 30001) {
               // 用户名重复
-              var tempUsername = that.registerForm.username + that.getRandomString()
-              if (tempUsername.length > 12 && tempUsername.length < 16) {
-                that.registerForm.username = tempUsername.substring(0, 12)
                 Message.error({
                   message:
-                    '当前用户名已被注册, 推荐您使用' +
-                    that.registerForm.username
-                })
-              } else {
-                Message.error({
-                  message: '当前用户名已被注册'
+                  '当前用户名已被注册'
                 })
               }
+              if (res.data.code === 30000) {
+              // 用户名重复
+                Message.error({
+                  message:
+                  '注册失败'
+                })
+              }
+            // 返回结果为空
             } else {
-              // 其他情况
-              Message.warning({
-                message: res.data.msg || '注册失败！'
+              Message.error({
+                message:
+                  '注册失败'
               })
             }
             that.loading = false
           })
+        // 没有通过表单校验
         } else {
           // 表单内容有误，阻止提交。
           console.log('error submit!!')
@@ -313,15 +318,6 @@ export default {
           return false
         }
       })
-    },
-    getRandomString() {
-      var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-      var len = chars.length
-      var randomString = ''
-      for (var i = 0; i < 4; i++) {
-        randomString += chars.charAt(Math.floor(Math.random() * len))
-      }
-      return randomString
     },
     backToLoginPage() {
       this.$router.push({

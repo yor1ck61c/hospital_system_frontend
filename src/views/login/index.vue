@@ -92,6 +92,9 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    this.receiveRegisterInfo()
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -123,6 +126,14 @@ export default {
       this.$router.push({
         path: '/register'
       })
+    },
+    receiveRegisterInfo() {
+      var username = this.$route.params.username
+      var password = this.$route.params.password
+      if (username !== undefined && password !== undefined) {
+        this.loginForm.username = username
+        this.loginForm.password = password
+      }
     }
   }
 }
