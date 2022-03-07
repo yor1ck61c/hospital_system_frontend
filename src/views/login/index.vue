@@ -118,6 +118,11 @@ export default {
           return false
         }
       })
+    },
+    goToRegisterPage() {
+      this.$router.push({
+        path: '/register'
+      })
     }
   }
 }
