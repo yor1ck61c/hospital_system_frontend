@@ -79,7 +79,7 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
-    path: '/user-management',
+    path: '/user',
     name: 'user_management',
     component: Layout,
     meta: { title: '用户信息管理', icon: 'table', roles: ['admin'] },
@@ -99,7 +99,19 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: 'external-link',
+    path: '/data',
+    name: 'data_item_management',
+    component: Layout,
+    children: [
+      {
+        path: 'item',
+        component: () => import('@/views/data_item_management/data_item_management'),
+        meta: { title: '指标项管理', icon: 'table', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/external-link',
     component: Layout,
     children: [
       {
