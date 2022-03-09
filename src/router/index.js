@@ -73,19 +73,41 @@ export const constantRoutes = [
         meta: { title: '其他医院信息', icon: 'table' }
       }
     ]
-  },
+  }
 
+]
+
+export const asyncRoutes = [
+  {
+    path: '/user-management',
+    name: 'user_management',
+    component: Layout,
+    meta: { title: '用户信息管理', icon: 'table', roles: ['admin'] },
+    children: [
+      {
+        path: 'account',
+        name: 'account_management',
+        component: () => import('@/views/user_management/account_management'),
+        meta: { title: '医院信息管理', icon: 'table', roles: ['admin'] }
+      },
+      {
+        path: 'authority',
+        name: 'authority_management',
+        component: () => import('@/views/user_management/authority_management'),
+        meta: { title: '权限管理', icon: 'table', roles: ['admin'] }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
     children: [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        meta: { title: 'External Link', icon: 'link', roles: ['admin'] }
       }
     ]
   },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
