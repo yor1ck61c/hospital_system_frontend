@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/utils/login-request'
 import no_cookies_request from '@/utils/no-cookie-req'
 
 export function myLogin(data) {
