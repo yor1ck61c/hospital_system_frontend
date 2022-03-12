@@ -14,3 +14,19 @@ export function saveBioFeatureInfo(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function getCombinedBioFeatureData(data) {
+  return request({
+    url: '/bio_feature/combined_bio_feature_data',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function getCombinedBioFeatureItemNameList() {
+  return request({
+    url: '/bio_feature/combined_bio_feature_name_list',
+    method: 'get'
+  })
+}
+

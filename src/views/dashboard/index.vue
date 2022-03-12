@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" type="border-card" style="margin-left: 50px; margin-top: 30px; width: 1100px;" @tab-click="handleClick">
           <el-tab-pane label="生命体征类指标" name="first">
             <div style="margin-top: 10px;">
-              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" filterable placeholder="请选择生命体征类指标">
+              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" filterable clearable placeholder="请选择生命体征类指标" style="width: 21%;">
                 <el-option
                   v-for="item in combinedBioFeatureNameList"
                   :key="item.value"
@@ -21,7 +21,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-button type="primary" style="margin-left: 20px;">搜索</el-button>
+              <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedBioFeature()">搜索</el-button>
               <el-button type="primary" style="margin-left: 20px;" @click="newBioFeatureItemVisible = true; generateBioFeatureItemName()">输入指标项</el-button>
             </div>
             <el-dialog title="输入指标项" :visible.sync="newBioFeatureItemVisible" style="text-align: center">
@@ -83,19 +83,23 @@
 
 <script>
 import echarts from 'echarts'
-import { getItemNameList, saveBioFeatureInfo } from '@/api/bio_feature'
+import { getItemNameList, getCombinedBioFeatureItemNameList, saveBioFeatureInfo, getCombinedBioFeatureData } from '@/api/bio_feature'
 import { Message } from 'element-ui'
 
 export default {
   name: 'Homepage',
   data() {
     return {
+      // 默认选中哪个卡片
       activeName: 'first',
       echartTitle: 'ECharts 入门示例',
+      // 搜索指定生命特征类指标
       searchCombinedBioFeatureForm: {
         combinedBioFeatureName: '',
+        hospitalName: '',
         year: ''
       },
+      // 生命特征类指标列表
       combinedBioFeatureNameList: [],
       newBioFeatureItemVisible: false,
       newBioFeatureItemForm: {
@@ -162,30 +166,77 @@ export default {
   created() {
   },
   mounted() {
-    this.initBioFeatureItemChart()
+    this.generateCombinedBioFeatureItemNameList()
+    // this.initBioFeatureItemChart()
   },
   methods: {
+    // 保留方法，切换卡片时加载名称列表
     handleClick() {
-      // alert('click')
+      if (this.activeName === 'first') {
+        console.log('1')
+      }
+      if (this.activeName === 'second') {
+        console.log('2')
+      }
+      if (this.activeName === 'third') {
+        console.log('3')
+      }
+      if (this.activeName === 'forth') {
+        console.log('4')
+      }
     },
+    // 生成生命特征类指标名字列表
+    generateCombinedBioFeatureItemNameList() {
+      var that = this
+      getCombinedBioFeatureItemNameList().then((res) => {
+        const { data } = res
+        this.generateItemNameList(that.combinedBioFeatureNameList, data)
+      })
+    },
+    // 生成生命特征类指标字段名字列表
     generateBioFeatureItemName() {
+      var that = this
       if (this.bioFeatureItemNameList.length === 0) {
         getItemNameList().then((res) => {
           const { data } = res
-          this.generateBioFeatureItemNameList(data)
+          this.generateItemNameList(that.bioFeatureItemNameList, data)
         })
       } else {
         console.log('已完成加载')
       }
     },
-    generateBioFeatureItemNameList(data) {
+    // 通用方法，将后端返回来的名称数组变成可供el-option展示的形式。
+    // list：要渲染的数组。data：只包含item_name的数组。返回{label value}均为data中item_name的对象数组。
+    generateItemNameList(list, data) {
       for (var i = 0; i < data.length; i++) {
         var tempObj = {}
         tempObj.value = data[i].itemName
         tempObj.label = data[i].itemName
-        this.bioFeatureItemNameList.push(tempObj)
+        list.push(tempObj)
       }
     },
+    // 通用方法, 按公式计算对应字段每个月的值。
+    // numerator: 分子 denominator: 分母 返回一个list, 包含12个月的值
+    getEchartsValueList(numerator, denominator) {
+      var valueList = []
+      var keys = Object.keys(numerator)
+
+      for (var i = 0; i < 12; i++) {
+        var key = keys[i]
+        var nValue = numerator[key]
+        var dValue = denominator[key]
+        if (nValue == null) {
+          nValue = 0
+        }
+        // 防止除0异常
+        if (dValue == null) {
+          dValue = 1
+        }
+        valueList.push((nValue / dValue) * 100)
+      }
+      return valueList
+    },
+    // 保存生命特征类指标字段的值
     saveBioFeatureInfo() {
       var that = this
       this.newBioFeatureItemForm.hospitalName = this.$store.getters.hospitalName
@@ -203,25 +254,46 @@ export default {
       })
       this.newBioFeatureItemVisible = false
     },
-    initBioFeatureItemChart() {
+    // 搜索指定生命特征类指标，并渲染echart
+    searchCombinedBioFeature() {
+      var that = this
+      this.searchCombinedBioFeatureForm.hospitalName = this.$store.getters.hospitalName
+      getCombinedBioFeatureData(this.searchCombinedBioFeatureForm).then((res) => {
+        const { msg, data } = res
+        Message({
+          message: msg,
+          type: 'success'
+        })
+        var valueList = that.getEchartsValueList(data.numerator, data.denominator)
+        that.initBioFeatureItemChart(data.item_name, valueList)
+      })
+    },
+    // 初始化生命特征类指标echart
+    initBioFeatureItemChart(item_name, valueList) {
       var BFIC = echarts.init(this.$refs.bio_feature_item_chart)
       BFIC.setOption({
         title: {
-          text: this.echartTitle// this.echartTitle
+          text: item_name
         },
-        tooltip: {},
+        tooltip: {
+          formatter: '{c}%'
+        },
         legend: {
-          data: ['销量']
         },
         xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
         },
         yAxis: {},
         series: [
           {
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            name: item_name,
+            type: 'line',
+            itemStyle: {
+              label: {
+                formatter: '{b}/n{c}%'
+              }
+            },
+            data: valueList
           }
         ]
       })
