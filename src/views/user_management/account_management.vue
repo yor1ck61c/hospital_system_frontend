@@ -15,7 +15,7 @@
     </el-header>
     <el-main>
       <el-table
-        :data="acccountInfoTableData"
+        :data="acccountInfoTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         border
         style="margin-top: 30px;"
       >
@@ -130,11 +130,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否为中心医院" :label-width="formLabelWidth" prop="centerType">
-          <el-input
-            v-model="userInfoForm.centerType"
-            autocomplete="off"
-            style="width: 300px;"
-          />
+          <el-select v-model="userInfoForm.centerType" filterable clearable placeholder="请选择是否为中心医院" style="width: 300px;">
+            <el-option
+              v-for="item in centerType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -206,6 +209,18 @@ export default {
         }, {
           value: '市级',
           label: '市级'
+        }
+      ],
+      centerType: [
+        {
+          value: '2',
+          label: '主中心医院'
+        }, {
+          value: '1',
+          label: '分中心医院'
+        }, {
+          value: '0',
+          label: '非中心医院'
         }
       ],
       typeList: [{
@@ -294,6 +309,7 @@ export default {
       this.userInfoForm = data
       this.updateUserInfoVisible = true
     },
+    // 更新用户信息
     updateUserInfo: function(data) {
       this.$refs[data].validate((valid) => {
         if (valid) {

@@ -30,3 +30,25 @@ export function getCombinedBioFeatureItemNameList() {
   })
 }
 
+export function getItemNameTableData() {
+  return request({
+    url: '/bio_feature/single_list',
+    method: 'get'
+  })
+}
+
+export function addItem(data) {
+  return request({
+    url: '/bio_feature/insert',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function deleteItem(data) {
+  return request({
+    url: '/bio_feature/delete',
+    method: 'delete',
+    data: JSON.stringify(data)
+  })
+}

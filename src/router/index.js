@@ -106,7 +106,7 @@ export const asyncRoutes = [
       {
         path: 'item',
         component: () => import('@/views/data_item_management/data_item_management'),
-        meta: { title: '指标项管理', icon: 'table', roles: ['admin'] }
+        meta: { title: '指标管理', icon: 'table', roles: ['admin'] }
       }
     ]
   },
