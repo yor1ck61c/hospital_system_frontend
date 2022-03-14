@@ -258,11 +258,26 @@ export default {
     searchCombinedBioFeature() {
       var that = this
       this.searchCombinedBioFeatureForm.hospitalName = this.$store.getters.hospitalName
+      if (this.searchCombinedBioFeatureForm.combinedBioFeatureName === '') {
+        Message({
+          message: '请先选择要展示的指标项名称',
+          type: 'error'
+        })
+        return
+      }
+      if (this.searchCombinedBioFeatureForm.year === '') {
+        Message({
+          message: '请先选择年份',
+          type: 'error'
+        })
+        return
+      }
       getCombinedBioFeatureData(this.searchCombinedBioFeatureForm).then((res) => {
         const { msg, data } = res
         Message({
           message: msg,
-          type: 'success'
+          type: 'success',
+          duration: 2 * 1000
         })
         var valueList = that.getEchartsValueList(data.numerator, data.denominator)
         that.initBioFeatureItemChart(data.item_name, valueList)

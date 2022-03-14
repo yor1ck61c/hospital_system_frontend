@@ -52,7 +52,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
       Message({
-        message: res.msg,
+        message: res.msg || '出错了',
         type: 'error',
         duration: 5 * 1000
       })

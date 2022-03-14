@@ -30,3 +30,25 @@ export function register(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function getAccountInfoList() {
+  return request({
+    url: '/user/list',
+    method: 'get'
+  })
+}
+
+export function generateHospitalNameList() {
+  return request({
+    url: '/user/hospital_list',
+    method: 'get'
+  })
+}
+
+export function handleUpdate(data) {
+  return request({
+    url: '/user/update',
+    method: 'put',
+    data: JSON.stringify(data)
+  })
+}

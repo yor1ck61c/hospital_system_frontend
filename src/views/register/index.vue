@@ -179,6 +179,7 @@ export default {
       registerForm: {
         username: '',
         password: '',
+        role: 'user', // 默认为普通用户
         rePassword: '',
         avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         introduction: '',
