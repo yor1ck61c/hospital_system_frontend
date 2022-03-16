@@ -1,9 +1,9 @@
 <template>
   <el-container>
-    <el-tabs v-model="activeName" type="border-card" style="margin-left: 50px; margin-top: 50px; width: 800px;">
+    <el-tabs v-model="activeName" type="border-card" style="margin-left: 50px; margin-top: 50px; width: 1000px;" @tab-click="handleClick">
       <el-tab-pane label="单个指标管理" name="single">
         <div>
-          <el-select v-model="itemName" filterable clearable placeholder="请选择单个指标" style="width: 200px; margin-top: 30px;">
+          <el-select v-model="itemName" filterable clearable placeholder="请选择单个指标" style="width: 200px; margin-top: 30px;" @focus="generateItemNameTableData">
             <el-option
               v-for="item in itemNameList"
               :key="item.value"
@@ -11,7 +11,7 @@
               :value="item.value"
             />
           </el-select>
-          <el-button type="primary" style="margin-left: 20px;" @click="searchItem(itemName)">搜索</el-button>
+          <el-button type="primary" style="margin-left: 20px;" @click="searchItem()">搜索</el-button>
           <el-input
             v-model="bioFeatureItem.itemName"
             placeholder="请输入要添加的单个指标名称"
@@ -37,7 +37,6 @@
               width="150px"
             >
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="updateItemName(scope.row)">编辑</el-button>
                 <el-button type="text" size="small" @click="deleteItemName(scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -54,13 +53,134 @@
           />
         </div>
       </el-tab-pane>
-      <el-tab-pane label="指标项管理" name="double">指标项管理</el-tab-pane>
+      <el-tab-pane label="指标项管理" name="double">
+        <div>
+          <el-select v-model="combinedItemName" filterable clearable placeholder="请选择指标" style="width: 200px; margin-top: 30px;" @focus="generateCombinedItemNameTableData">
+            <el-option
+              v-for="item in combinedItemNameList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+          <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedItem(combinedItemName)">搜索</el-button>
+          <el-button type="primary" style="margin-left: 20px;" @click="addCombinedItemVisible = true">添加指标项</el-button>
+          <el-dialog
+            title="添加指标项"
+            :visible.sync="addCombinedItemVisible"
+          >
+            <el-form ref="addRef" :model="newCombinedItemForm" :rules="addRule">
+              <el-form-item label="指标名" :label-width="formLabelWidth" prop="itemName">
+                <el-input
+                  v-model="newCombinedItemForm.itemName"
+                  autocomplete="off"
+                  style="width: 300px;"
+                  placeholder="请输入指标名"
+                />
+              </el-form-item>
+              <el-form-item label="公式分子指标名" :label-width="formLabelWidth" prop="numerator">
+                <el-select v-model="newCombinedItemForm.numerator" filterable clearable placeholder="请选择公式分子指标名" style="width: 300px;">
+                  <el-option
+                    v-for="item in itemNameList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="公式分母指标名" :label-width="formLabelWidth" prop="denominator">
+                <el-select v-model="newCombinedItemForm.denominator" filterable clearable placeholder="请选择公式分母指标名" style="width: 300px;">
+                  <el-option
+                    v-for="item in itemNameList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="定义" :label-width="formLabelWidth" prop="definition">
+                <el-input
+                  v-model="newCombinedItemForm.definition"
+                  type="textarea"
+                  :rows="2"
+                  placeholder="请输入指标定义"
+                />
+              </el-form-item>
+              <el-form-item label="说明" :label-width="formLabelWidth" prop="description">
+                <el-input
+                  v-model="newCombinedItemForm.description"
+                  type="textarea"
+                  :rows="2"
+                  placeholder="请输入指标说明"
+                />
+              </el-form-item>
+              <el-form-item label="意义" :label-width="formLabelWidth" prop="meaning">
+                <el-input
+                  v-model="newCombinedItemForm.meaning"
+                  type="textarea"
+                  :rows="2"
+                  placeholder="请输入指标意义"
+                />
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="addCombinedItemVisible = false">取 消</el-button>
+              <el-button type="primary" @click="addCombinedItem('addRef')">确 定</el-button>
+            </div>
+          </el-dialog>
+          <el-table
+            :data="combinedItemNameTableData.slice((currentPage2 - 1) * pagesize2, currentPage2 * pagesize2)"
+            border
+            style="margin-top: 20px;"
+          >
+            <el-table-column
+              prop="cbfiBfiMappingId"
+              label="id"
+              width="100px"
+            />
+            <el-table-column
+              prop="itemName"
+              label="指标名"
+              width="250px"
+            />
+            <el-table-column
+              prop="numerator"
+              label="分子指标名"
+              width="250px"
+            />
+            <el-table-column
+              prop="denominator"
+              label="分母指标名"
+              width="250px"
+            />
+            <el-table-column
+              label="操作"
+              width="100px"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="deleteCombinedItemName(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            :page-sizes="[5, 10, 15]"
+            :current-page="currentPage2"
+            :page-size="pagesize2"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="combinedItemNameTableData.length"
+            style="text-align:center; margin-top: 50px;"
+            @size-change="handleSizeChange2"
+            @current-change="handleCurrentChange2"
+          />
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </el-container>
 </template>
 
 <script>
-import { getItemNameList, getItemNameTableData, addItem, deleteItem } from '@/api/bio_feature'
+import { getItemNameList, getItemNameTableData, addItem, deleteItem, getCombinedItemNameTableData } from '@/api/bio_feature'
+import { getCombinedBioFeatureItemNameList, deleteCombinedItem, addCombinedItem } from '@/api/bio_feature'
 import { Message, MessageBox } from 'element-ui'
 export default {
   name: 'DataItemManagement',
@@ -68,13 +188,49 @@ export default {
     return {
       currentPage: 1,
       pagesize: 5,
+      currentPage2: 1,
+      pagesize2: 5,
       activeName: 'single',
       bioFeatureItem: {
         itemName: ''
       },
+      itemName: '',
       itemNameList: [],
       addItemName: '',
-      itemNameTableData: []
+      itemNameTableData: [],
+      combinedItemName: '',
+      combinedItemNameList: [],
+      combinedItemNameTableData: [],
+      addCombinedItemVisible: false,
+      newCombinedItemForm: {
+        itemName: '',
+        numerator: '',
+        denominator: '',
+        definition: '',
+        description: '',
+        meaning: ''
+      },
+      formLabelWidth: '120px',
+      addRule: {
+        itemName: [
+          { required: true, message: '请输入指标名', trigger: 'blur' }
+        ],
+        numerator: [
+          { required: true, message: '请输入公式分子指标项', trigger: 'blur' }
+        ],
+        denominator: [
+          { required: true, message: '请选择公式分母指标项', trigger: 'blur' }
+        ],
+        definition: [
+          { required: true, message: '请输入指标定义', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入指标说明', trigger: 'blur' }
+        ],
+        meaning: [
+          { required: true, message: '请输入指标意义', trigger: 'blur' }
+        ]
+      }
     }
   },
   mounted() {
@@ -82,6 +238,14 @@ export default {
     this.generateItemNameTableData()
   },
   methods: {
+    handleClick() {
+      if (this.combinedItemNameList.length === 0) {
+        this.generateCombinedItemName()
+      }
+      if (this.combinedItemNameTableData.length === 0) {
+        this.generateCombinedItemNameTableData()
+      }
+    },
     handleSizeChange: function(size) {
       this.pagesize = size
       console.log(this.pagesize) // 每页下拉显示数据
@@ -90,12 +254,34 @@ export default {
       this.currentPage = currentPage
       console.log(this.currentPage) // 点击第几页
     },
+    handleSizeChange2: function(size) {
+      this.pagesize2 = size
+      console.log(this.pagesize) // 每页下拉显示数据
+    },
+    handleCurrentChange2: function(currentPage) {
+      this.currentPage2 = currentPage
+      console.log(this.currentPage) // 点击第几页
+    },
+    // 生成指标项搜索列表
     generateSingleItemName() {
       var that = this
+      this.itemNameList = []
       if (this.itemNameList.length === 0) {
         getItemNameList().then((res) => {
           const { data } = res
-          this.generateItemNameList(that.itemNameList, data)
+          that.generateItemNameList(that.itemNameList, data)
+        })
+      } else {
+        console.log('已完成加载')
+      }
+    },
+    generateCombinedItemName() {
+      var that = this
+      this.combinedItemNameList = []
+      if (this.combinedItemNameList.length === 0) {
+        getCombinedBioFeatureItemNameList().then((res) => {
+          const { data } = res
+          this.generateItemNameList(that.combinedItemNameList, data)
         })
       } else {
         console.log('已完成加载')
@@ -120,24 +306,47 @@ export default {
         that.itemNameTableData = data
       })
     },
+    generateCombinedItemNameTableData() {
+      var that = this
+      getCombinedItemNameTableData().then((res) => {
+        that.combinedItemNameTableData = []
+        const { data } = res
+        that.combinedItemNameTableData = data
+      })
+    },
     // 搜索指定指标项
-    searchItem(name) {
-      if (name === '') {
-        this.generateItemNameTableData()
-      }
+    searchItem() {
       for (var i = 0; i < this.itemNameTableData.length; i++) {
-        console.log(name)
-        if (this.itemNameTableData[i].itemName === name) {
+        if (this.itemNameTableData[i].itemName === this.itemName) {
           var obj = this.itemNameTableData[i]
           this.itemNameTableData = []
           this.itemNameTableData.push(obj)
+          break
         }
       }
       this.itemName = ''
     },
-    // 添加一个指标项
+    searchCombinedItem(name) {
+      for (var i = 0; i < this.combinedItemNameTableData.length; i++) {
+        if (this.combinedItemNameTableData[i].itemName === name) {
+          var obj = this.combinedItemNameTableData[i]
+          this.combinedItemNameTableData = []
+          this.combinedItemNameTableData.push(obj)
+          break
+        }
+      }
+      this.combinedItemName = ''
+    },
+    // 添加单个指标项
     addSingleItem() {
       var that = this
+      if (that.bioFeatureItem.itemName === '') {
+        Message({
+          message: '指标项不能为空！',
+          type: 'error'
+        })
+        return
+      }
       addItem(that.bioFeatureItem).then((res) => {
         Message.success({
           message: res.msg || '添加失败'
@@ -148,6 +357,8 @@ export default {
         }, 500)
       })
     },
+    // 添加组合指标项
+    // 删除一个指标项
     deleteItemName(data) {
       MessageBox.confirm('确定删除该条记录?', '提示', {
         confirmButtonText: '确定',
@@ -171,6 +382,52 @@ export default {
         Message.info({
           message: '已取消删除'
         })
+      })
+    },
+    deleteCombinedItemName(data) {
+      MessageBox.confirm('确定删除该条记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteCombinedItem(data).then((res) => {
+          Message.success({
+            message: res.msg || '删除失败！'
+          })
+          setTimeout(() => {
+            this.generateCombinedItemName()
+            this.generateCombinedItemNameTableData()
+          }, 500)
+        }).catch(() => {
+          Message.warning({
+            message: '删除失败'
+          })
+        })
+      }).catch(() => {
+        Message.info({
+          message: '已取消删除'
+        })
+      })
+    },
+    addCombinedItem: function(refName) {
+      this.$refs[refName].validate((valid) => {
+        if (valid) {
+          addCombinedItem(this.newCombinedItemForm).then(() => {
+            Message.success({
+              message: '添加成功！'
+            })
+            this.addCombinedItemVisible = false
+            setTimeout(() => {
+              this.generateCombinedItemName()
+              this.generateCombinedItemNameTableData()
+            }, 500)
+          })
+        } else {
+          Message.error({
+            message: '请填写正确的信息！'
+          })
+          return false
+        }
       })
     }
   }

@@ -111,6 +111,18 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/center',
+    name: 'center_management',
+    component: Layout,
+    children: [
+      {
+        path: 'management',
+        component: () => import('@/views/center/index'),
+        meta: { title: '中心管理', icon: 'table', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/external-link',
     component: Layout,
     children: [

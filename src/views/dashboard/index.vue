@@ -2,10 +2,10 @@
   <el-container>
     <el-row>
       <el-col :span="24">
-        <el-tabs v-model="activeName" type="border-card" style="margin-left: 50px; margin-top: 30px; width: 1100px;" @tab-click="handleClick">
-          <el-tab-pane label="生命体征类指标" name="first">
+        <el-tabs v-model="activeName" type="border-card" style="margin-left: 40px; margin-top: 30px; width: 1250px;" @tab-click="handleClick">
+          <el-tab-pane label="查看指标信息（图表）" name="first">
             <div style="margin-top: 10px;">
-              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" filterable clearable placeholder="请选择生命体征类指标" style="width: 21%;">
+              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" filterable clearable placeholder="请选择指标" style="width: 20%;">
                 <el-option
                   v-for="item in combinedBioFeatureNameList"
                   :key="item.value"
@@ -22,8 +22,124 @@
                 />
               </el-select>
               <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedBioFeature()">搜索</el-button>
-              <el-button type="primary" style="margin-left: 20px;" @click="newBioFeatureItemVisible = true; generateBioFeatureItemName()">输入指标项</el-button>
             </div>
+            <div ref="bio_feature_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
+          </el-tab-pane>
+          <el-tab-pane label="查看指标信息（表格）" name="second">
+            <el-select v-model="SItemName" filterable clearable placeholder="请选择指标" style="width: 20%;" @focus="generateBioFeatureItemName(); ">
+              <el-option
+                v-for="item in bioFeatureItemNameList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+            <el-select v-model="SYear" filterable clearable placeholder="请选择年份" style="width: 20%; margin-left: 30px;" @focus="generateValueTableData">
+              <el-option
+                v-for="item in year"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+            <el-button type="primary" style="margin-left: 20px;" @click="searchValueTableObj()">搜索</el-button>
+            <el-button type="primary" style="margin-left: 20px;" @click="newBioFeatureItemVisible = true; generateBioFeatureItemName()">按月输入指标项</el-button>
+            <el-button type="primary" style="margin-left: 20px;" @click="newValueByYearVisible = true; generateBioFeatureItemName()">按年输入指标项</el-button>
+            <!-- slice(start, end) 方法以新的数组对象，返回数组中被选中的元素。 -->
+            <el-table
+              :data="valueTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
+              border
+              style="margin-top: 20px;"
+            >
+              <el-table-column
+                prop="year"
+                label="年份"
+                width="100px"
+              />
+              <el-table-column
+                prop="itemName"
+                label="指标名称"
+              />
+              <el-table-column
+                prop="january"
+                label="一月"
+                width="50px"
+              />
+              <el-table-column
+                prop="february"
+                label="二月"
+                width="50px"
+              />
+              <el-table-column
+                prop="march"
+                label="三月"
+                width="50px"
+              />
+              <el-table-column
+                prop="april"
+                label="四月"
+                width="50px"
+              />
+              <el-table-column
+                prop="may"
+                label="五月"
+                width="50px"
+              />
+              <el-table-column
+                prop="june"
+                label="六月"
+                width="50px"
+              />
+              <el-table-column
+                prop="july"
+                label="七月"
+                width="50px"
+              />
+              <el-table-column
+                prop="august"
+                label="八月"
+                width="50px"
+              />
+              <el-table-column
+                prop="september"
+                label="九月"
+                width="50px"
+              />
+              <el-table-column
+                prop="october"
+                label="十月"
+                width="50px"
+              />
+              <el-table-column
+                prop="november"
+                label="十一月"
+                width="80px"
+              />
+              <el-table-column
+                prop="december"
+                label="十二月"
+                width="80px"
+              />
+              <el-table-column
+                label="操作"
+                width="150px"
+              >
+                <template slot-scope="scope">
+                  <el-button type="text" size="small" @click="updateValueByYear(scope.row)">更改</el-button>
+                  <el-button type="text" size="small" @click="deleteValue(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              :page-sizes="[5, 10, 15]"
+              :current-page="currentPage"
+              :page-size="pagesize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="valueTableData.length"
+              style="text-align:center; margin-top: 50px;"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
             <el-dialog title="输入指标项" :visible.sync="newBioFeatureItemVisible" style="text-align: center">
               <el-form :model="newBioFeatureItemForm">
                 <el-form-item>
@@ -70,11 +186,133 @@
                 <el-button type="primary" @click="saveBioFeatureInfo()">保 存</el-button>
               </div>
             </el-dialog>
-            <div ref="bio_feature_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
+            <el-dialog title="输入指标项" :visible.sync="newValueByYearVisible" style="text-align: center">
+              <el-form :model="newBioFeatureItemForm">
+                <el-form-item>
+                  <span>选择指标项</span>
+                  <el-select v-model="newValueByYearForm.itemName" filterable clearable placeholder="请选择要输入的指标项" style="width: 30%; margin-left: 20px;">
+                    <el-option
+                      v-for="item in bioFeatureItemNameList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <span>选择年份</span>
+                  <el-select v-model="newValueByYearForm.year" filterable clearable placeholder="请选择年份" style="width: 30%; margin-left: 30px;">
+                    <el-option
+                      v-for="item in year"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <span>一月</span>
+                  <el-input
+                    v-model="newValueByYearForm.january"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>二月</span>
+                  <el-input
+                    v-model="newValueByYearForm.february"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>三月</span>
+                  <el-input
+                    v-model="newValueByYearForm.march"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>四月</span>
+                  <el-input
+                    v-model="newValueByYearForm.april"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>五月</span>
+                  <el-input
+                    v-model="newValueByYearForm.may"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>六月</span>
+                  <el-input
+                    v-model="newValueByYearForm.june"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>七月</span>
+                  <el-input
+                    v-model="newValueByYearForm.july"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>八月</span>
+                  <el-input
+                    v-model="newValueByYearForm.august"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>九月</span>
+                  <el-input
+                    v-model="newValueByYearForm.september"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>十月</span>
+                  <el-input
+                    v-model="newValueByYearForm.october"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>十一月</span>
+                  <el-input
+                    v-model="newValueByYearForm.november"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <span>十二月</span>
+                  <el-input
+                    v-model="newValueByYearForm.december"
+                    autocomplete="off"
+                    style="width: 30%; margin-left: 20px;"
+                  />
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="newValueByYearVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveValueByYear()">保 存</el-button>
+              </div>
+            </el-dialog>
           </el-tab-pane>
-          <el-tab-pane label="麻醉科结构管理指标" name="second">麻醉科结构管理指标</el-tab-pane>
-          <el-tab-pane label="麻醉科过程管理指标" name="third">麻醉科过程管理指标</el-tab-pane>
-          <el-tab-pane label="麻醉科并发症相关指标" name="forth">麻醉科并发症相关指标</el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -84,7 +322,8 @@
 <script>
 import echarts from 'echarts'
 import { getItemNameList, getCombinedBioFeatureItemNameList, saveBioFeatureInfo, getCombinedBioFeatureData } from '@/api/bio_feature'
-import { Message } from 'element-ui'
+import { saveCBFIValueByYear, getValueTableData, deleteValue } from '@/api/bio_feature'
+import { Message, MessageBox } from 'element-ui'
 
 export default {
   name: 'Homepage',
@@ -102,6 +341,7 @@ export default {
       // 生命特征类指标列表
       combinedBioFeatureNameList: [],
       newBioFeatureItemVisible: false,
+      newValueByYearVisible: false,
       newBioFeatureItemForm: {
         itemName: '',
         hospitalName: '',
@@ -160,16 +400,47 @@ export default {
           value: 'december',
           label: '12月'
         }
-      ]
+      ],
+      newValueByYearForm: {
+        itemName: '',
+        hospitalName: '',
+        year: '',
+        january: '',
+        february: '',
+        march: '',
+        april: '',
+        may: '',
+        june: '',
+        july: '',
+        autust: '',
+        september: '',
+        october: '',
+        november: '',
+        december: ''
+      },
+      valueTableData: [],
+      SItemName: '',
+      SYear: '',
+      currentPage: 1,
+      pagesize: 5
     }
   },
   created() {
   },
   mounted() {
     this.generateCombinedBioFeatureItemNameList()
+    this.generateValueTableData()
     // this.initBioFeatureItemChart()
   },
   methods: {
+    handleSizeChange: function(size) {
+      this.pagesize = size
+      console.log(this.pagesize) // 每页下拉显示数据
+    },
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage
+      console.log(this.currentPage) // 点击第几页
+    },
     // 保留方法，切换卡片时加载名称列表
     handleClick() {
       if (this.activeName === 'first') {
@@ -177,12 +448,6 @@ export default {
       }
       if (this.activeName === 'second') {
         console.log('2')
-      }
-      if (this.activeName === 'third') {
-        console.log('3')
-      }
-      if (this.activeName === 'forth') {
-        console.log('4')
       }
     },
     // 生成生命特征类指标名字列表
@@ -196,14 +461,11 @@ export default {
     // 生成生命特征类指标字段名字列表
     generateBioFeatureItemName() {
       var that = this
-      if (this.bioFeatureItemNameList.length === 0) {
-        getItemNameList().then((res) => {
-          const { data } = res
-          this.generateItemNameList(that.bioFeatureItemNameList, data)
-        })
-      } else {
-        console.log('已完成加载')
-      }
+      this.bioFeatureItemNameList = []
+      getItemNameList().then((res) => {
+        const { data } = res
+        this.generateItemNameList(that.bioFeatureItemNameList, data)
+      })
     },
     // 通用方法，将后端返回来的名称数组变成可供el-option展示的形式。
     // list：要渲染的数组。data：只包含item_name的数组。返回{label value}均为data中item_name的对象数组。
@@ -302,7 +564,7 @@ export default {
         series: [
           {
             name: item_name,
-            type: 'line',
+            type: 'bar',
             itemStyle: {
               label: {
                 formatter: '{b}/n{c}%'
@@ -312,6 +574,79 @@ export default {
           }
         ]
       })
+    },
+    // 按年保存信息
+    saveValueByYear() {
+      this.newValueByYearForm.hospitalName = this.$store.getters.hospitalName
+      saveCBFIValueByYear(this.newValueByYearForm).then((res) => {
+        Message({
+          message: res.msg,
+          type: 'success'
+        })
+      })
+      this.newValueByYearVisible = false
+      setTimeout(() => {
+        this.generateValueTableData()
+      }, 500)
+    },
+    updateValueByYear(value) {
+      this.newValueByYearVisible = true
+      this.newValueByYearForm = value
+    },
+    deleteValue(value) {
+      MessageBox.confirm('确定删除该条记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteValue(value).then((res) => {
+          Message.success({
+            message: res.msg || '删除失败！'
+          })
+          setTimeout(() => {
+            this.generateValueTableData()
+          }, 500)
+        }).catch(() => {
+          Message.warning({
+            message: '删除失败'
+          })
+        })
+      }).catch(() => {
+        Message.info({
+          message: '已取消删除'
+        })
+      })
+    },
+    // 获取表格信息
+    generateValueTableData() {
+      var that = this
+      that.valueTableData = []
+      getValueTableData(this.$store.getters.hospitalName).then((res) => {
+        const { data } = res
+        that.valueTableData = data
+      })
+    },
+    searchValueTableObj() {
+      // eslint-disable-next-line no-empty
+      if (this.SItemName === '' || this.SYear === '') {
+        Message({
+          message: '请先选择指标或年份！',
+          type: 'error'
+        })
+        this.generateValueTableData()
+        return
+      }
+      for (var i = 0; i < this.valueTableData.length; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (this.valueTableData[i].itemName === this.SItemName && this.valueTableData[i].year == this.SYear) {
+          var obj = this.valueTableData[i]
+          this.valueTableData = []
+          this.valueTableData.push(obj)
+          break
+        }
+      }
+      this.SItemName = ''
+      this.SYear = ''
     }
   }
 }

@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div>
-        <el-select v-model="hospitalName" filterable clearable placeholder="请选择医院" style="width: 15%;  margin-top: 30px;">
+        <el-select v-model="hospitalName" filterable clearable placeholder="请选择医院" style="width: 15%;  margin-top: 30px;" @focus="getAcccountInfoTableData">
           <el-option
             v-for="item in hospitalNameList"
             :key="item.value"
@@ -272,14 +272,12 @@ export default {
     },
     // 搜索某个医院
     searchHospital(name) {
-      if (name === '') {
-        this.getAcccountInfoTableData()
-      }
       for (var i = 0; i < this.acccountInfoTableData.length; i++) {
         if (this.acccountInfoTableData[i].hospitalName === name) {
           var obj = this.acccountInfoTableData[i]
           this.acccountInfoTableData = []
           this.acccountInfoTableData.push(obj)
+          break
         }
       }
       this.hospitalName = ''
