@@ -79,22 +79,28 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
-    path: '/user',
+    path: '/account',
     name: 'user_management',
     component: Layout,
-    meta: { title: '用户信息管理', icon: 'table', roles: ['admin'] },
     children: [
       {
-        path: 'account',
+        path: 'management',
         name: 'account_management',
         component: () => import('@/views/user_management/account_management'),
-        meta: { title: '医院信息管理', icon: 'table', roles: ['admin'] }
-      },
+        meta: { title: '医院信息管理', icon: 'table', roles: ['admin', 'super_admin'] }
+      }
+    ]
+  },
+  {
+    path: '/authority',
+    name: 'data_item_management',
+    component: Layout,
+    children: [
       {
-        path: 'authority',
+        path: 'management',
         name: 'authority_management',
         component: () => import('@/views/user_management/authority_management'),
-        meta: { title: '权限管理', icon: 'table', roles: ['admin'] }
+        meta: { title: '权限管理', icon: 'table', roles: ['sub_center', 'center'] }
       }
     ]
   },
@@ -106,7 +112,7 @@ export const asyncRoutes = [
       {
         path: 'item',
         component: () => import('@/views/data_item_management/data_item_management'),
-        meta: { title: '指标管理', icon: 'table', roles: ['admin'] }
+        meta: { title: '指标管理', icon: 'table', roles: ['admin', 'super_admin'] }
       }
     ]
   },
@@ -118,7 +124,7 @@ export const asyncRoutes = [
       {
         path: 'management',
         component: () => import('@/views/center/index'),
-        meta: { title: '中心管理', icon: 'table', roles: ['admin'] }
+        meta: { title: '中心管理', icon: 'table', roles: ['admin', 'super_admin'] }
       }
     ]
   },
@@ -128,7 +134,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link', roles: ['admin'] }
+        meta: { title: 'External Link', icon: 'link', roles: ['super_admin'] }
       }
     ]
   },

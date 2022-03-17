@@ -52,11 +52,11 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
       Message({
-        message: res.msg || '出错了',
+        message: res.msg || '出错了,请尝试重新登录',
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject(new Error(res.msg || '出错了'))
+      return Promise.reject(new Error(res.msg || '出错了,请尝试重新登录'))
     } else {
       return res
     }

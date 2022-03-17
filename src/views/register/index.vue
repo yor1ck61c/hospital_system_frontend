@@ -214,7 +214,7 @@ export default {
       registerForm: {
         username: '',
         password: '',
-        role: 'user', // 默认为普通用户
+        role: '', // 默认为普通用户
         rePassword: '',
         avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         introduction: '',
@@ -337,6 +337,18 @@ export default {
         if (valid) {
           // 播放加载动画
           this.loading = true
+          // eslint-disable-next-line eqeqeq
+          if (that.registerForm.centerType == 0) {
+            that.registerForm.role = 'hospital'
+          }
+          // eslint-disable-next-line eqeqeq
+          if (that.registerForm.centerType == 1) {
+            that.registerForm.role = 'sub_center'
+          }
+          // eslint-disable-next-line eqeqeq
+          if (that.registerForm.centerType == 2) {
+            that.registerForm.role = 'center'
+          }
           register(that.registerForm).then((res) => {
             const result = res.data
             // 返回结果不为空

@@ -99,3 +99,11 @@ export function deleteValue(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function generateOtherHospitalData(userId) {
+  return request({
+    url: '/bio_feature/other',
+    method: 'post',
+    data: JSON.stringify(userId)
+  })
+}
