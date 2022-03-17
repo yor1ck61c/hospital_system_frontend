@@ -165,6 +165,8 @@ export default {
     },
     // 搜索指定生命特征类指标，并渲染echart
     searchCombinedBioFeature() {
+      var BFIC = echarts.init(this.$refs.bio_feature_item_chart)
+      BFIC.clear()
       var that = this
       this.searchCombinedBioFeatureForm.hospitalName = this.otherHospitalName
       if (this.searchCombinedBioFeatureForm.combinedBioFeatureName === '') {

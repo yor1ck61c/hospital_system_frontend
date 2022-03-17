@@ -31,6 +31,14 @@ export function getCenterTableData() {
   })
 }
 
+export function getViceCenterName(data) {
+  return request({
+    url: '/center/vice_center',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
 export function deleteCenter(data) {
   return request({
     url: '/center/delete',

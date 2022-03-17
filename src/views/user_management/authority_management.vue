@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import { getCenterTableData, generateHospitalTableData, saveTempGrand, generateTempAuthTableData, deleteTempAuth } from '@/api/center'
+import { getCenterTableData, generateHospitalTableData, saveTempGrand, generateTempAuthTableData, deleteTempAuth, getViceCenterName } from '@/api/center'
 import { Message, MessageBox } from 'element-ui'
 
 export default {
@@ -175,6 +175,13 @@ export default {
       if (centerType == 2) {
         getCenterTableData().then((res) => {
           that.centerNameList = res.data
+        })
+      }
+      // eslint-disable-next-line eqeqeq
+      if (centerType == 1) {
+        getViceCenterName(this.$store.getters.userId).then((res) => {
+          const { data } = res
+          that.centerNameList.push(data)
         })
       }
     },
