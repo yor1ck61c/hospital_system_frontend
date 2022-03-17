@@ -89,9 +89,7 @@
           <i class="el-icon-edit" />
         </span>
         <el-select
-          ref="hospitalType"
           v-model="registerForm.hospitalType"
-          name="hospitalType"
           prop="hospitalType"
           filterable
           placeholder="请选择医院类型"
@@ -124,6 +122,43 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item prop="centerType">
+        <span class="svg-container">
+          <i class="el-icon-edit" />
+        </span>
+        <el-select
+          v-model="registerForm.centerType"
+          filterable
+          placeholder="请选择是否为中心医院"
+          style="width: 90%;"
+        >
+          <el-option
+            v-for="item in centerTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="centerName">
+        <span class="svg-container">
+          <i class="el-icon-edit" />
+        </span>
+        <el-select
+          v-model="registerForm.centerId"
+          clearable
+          filterable
+          placeholder="请选择所在中心名称"
+          style="width: 90%;"
+        >
+          <el-option
+            v-for="item in centerNameList"
+            :key="item.centerId"
+            :label="item.centerName"
+            :value="item.centerId"
+          />
+        </el-select>
+      </el-form-item>
       <div style="width: 100%; text-align: center; margin-top: 0px;">
         <el-button
           :loading="loading"
@@ -145,7 +180,7 @@
 <script>
 import { register } from '@/api/user'
 import { Message } from 'element-ui'
-
+import { getCenterTableData } from '@/api/center'
 export default {
   name: 'Register',
   data() {
@@ -186,7 +221,8 @@ export default {
         hospitalName: '',
         hospitalLevel: '', // 医院等级：省级/地级/县级
         hospitalType: '', // 医院类型：综合/中医/妇幼/民营
-        centerType: '0' // 中心类型，是否为主中心/分中心。主中心：2 分中心：1 普通医院：0
+        centerType: '', // 中心类型，是否为主中心/分中心。主中心：2 分中心：1 普通医院：0
+        centerId: ''
       },
       registerRules: {
         username: [
@@ -206,6 +242,12 @@ export default {
         ],
         hospitalType: [
           { required: true, message: '请选择医院类型', trigger: 'change' }
+        ],
+        centerType: [
+          { required: true, message: '请选择是否为中心医院', trigger: 'change' }
+        ],
+        centerId: [
+          { required: true, message: '请选择所属中心名称', trigger: 'change' }
         ]
       },
       hospitalLevelOptions: [{
@@ -231,10 +273,21 @@ export default {
         value: '民营医院',
         label: '民营医院'
       }],
+      centerTypeOptions: [{
+        value: '0',
+        label: '非中心医院'
+      }, {
+        value: '1',
+        label: '分中心医院'
+      }, {
+        value: '2',
+        label: '主中心医院'
+      }],
       loading: false,
       passwordType: 'password',
       rePasswordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      centerNameList: []
     }
   },
   watch: {
@@ -246,8 +299,17 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.generateCenterInfo()
+  },
   methods: {
+    generateCenterInfo() {
+      var that = this
+      that.centerNameList = []
+      getCenterTableData().then((res) => {
+        that.centerNameList = res.data
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''

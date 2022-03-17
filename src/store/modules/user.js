@@ -13,6 +13,7 @@ const getDefaultState = () => {
     avatar: '',
     userId: '',
     hospitalName: '',
+    centerType: '',
     roles: []
   }
 }
@@ -36,6 +37,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_CENTER_TYPE: (state, centerType) => {
+    state.centerType = centerType
   },
   SET_HOSPITAL_NAME: (state, hospitalName) => {
     state.hospitalName = hospitalName
@@ -69,7 +73,7 @@ const actions = {
         if (!res.data) {
           return reject('拉取用户信息失败，请重新登录。')
         }
-        const { username, avatar, role, id, hospitalName } = res.data
+        const { username, avatar, role, id, hospitalName, centerType } = res.data
         // alert(username + ' ' + avatar + ' ' + role + ' ' + id)
         const roles = role.split(',')
         commit('SET_USER_ID', id)
@@ -77,6 +81,7 @@ const actions = {
         commit('SET_NAME', username)
         commit('SET_AVATAR', avatar)
         commit('SET_HOSPITAL_NAME', hospitalName)
+        commit('SET_CENTER_TYPE', centerType)
         resolve(res.data)
       }).catch(error => {
         reject(error)
