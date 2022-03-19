@@ -63,7 +63,7 @@
         :visible.sync="grantVisible"
       >
         <el-form :model="grantInfoForm">
-          <el-select v-model="centerId" filterable clearable placeholder="请选择中心名称" style="width: 20%; margin-left: 50px; margin-top: 30px;">
+          <el-select v-model="centerId2" filterable clearable placeholder="请选择中心名称" style="width: 20%; margin-left: 50px; margin-top: 30px;">
             <el-option
               v-for="item in centerNameList"
               :key="item.centerId"
@@ -71,9 +71,9 @@
               :value="item.centerId"
             />
           </el-select>
-          <el-select v-model="grantInfoForm.otherHospitalUserId" filterable clearable placeholder="请选择授予查看权限的医院" style="width: 20%; margin-left: 50px; margin-top: 30px;" @focus="generateHosptialNameList">
+          <el-select v-model="grantInfoForm.otherHospitalUserId" filterable clearable placeholder="请选择授予查看权限的医院" style="width: 30%; margin-left: 50px; margin-top: 30px;" @focus="generateHosptialNameList2">
             <el-option
-              v-for="item in hospitalNameList"
+              v-for="item in hospitalNameList2"
               :key="item.id"
               :label="item.hospitalName"
               :value="item.id"
@@ -129,7 +129,9 @@ export default {
     return {
       hospitalName: '',
       centerId: '',
+      centerId2: '',
       hospitalNameList: [],
+      hospitalNameList2: [],
       centerNameList: [],
       hospitalTableData: [],
       grantVisible: false,
@@ -197,6 +199,20 @@ export default {
         generateHospitalTableData(this.centerId).then((res) => {
           that.hospitalNameList = res.data
           that.hospitalTableData = res.data
+        })
+      }
+    },
+    generateHosptialNameList2() {
+      var that = this
+      if (this.centerId2 === '') {
+        Message({
+          message: '请先选择中心名称',
+          type: 'error'
+        })
+        return
+      } else {
+        generateHospitalTableData(this.centerId2).then((res) => {
+          that.hospitalNameList2 = res.data
         })
       }
     },

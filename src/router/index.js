@@ -93,7 +93,7 @@ export const asyncRoutes = [
   },
   {
     path: '/authority',
-    name: 'data_item_management',
+    name: 'authority_management',
     component: Layout,
     children: [
       {

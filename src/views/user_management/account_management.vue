@@ -98,8 +98,10 @@
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" prop="role">
           <el-radio-group v-model="userInfoForm.role">
-            <el-radio label="admin" />
-            <el-radio label="user" />
+            <el-radio label="super_admin" />
+            <el-radio label="hospital" />
+            <el-radio label="sub_center" />
+            <el-radio label="center" />
           </el-radio-group>
         </el-form-item>
         <el-form-item label="医院名称" :label-width="formLabelWidth" prop="hospitalName">
@@ -272,6 +274,13 @@ export default {
     },
     // 搜索某个医院
     searchHospital(name) {
+      if (name === '') {
+        Message({
+          message: '请先选择医院',
+          type: 'error'
+        })
+        return
+      }
       for (var i = 0; i < this.acccountInfoTableData.length; i++) {
         if (this.acccountInfoTableData[i].hospitalName === name) {
           var obj = this.acccountInfoTableData[i]

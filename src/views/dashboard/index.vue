@@ -21,6 +21,14 @@
                   :value="item.value"
                 />
               </el-select>
+              <el-select v-model="shape" filterable clearable placeholder="请选择图表类型" style="width: 20%; margin-left: 30px;">
+                <el-option
+                  v-for="item in shapeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
               <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedBioFeature()">搜索</el-button>
             </div>
             <div ref="bio_feature_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
@@ -43,8 +51,9 @@
               />
             </el-select>
             <el-button type="primary" style="margin-left: 20px;" @click="searchValueTableObj()">搜索</el-button>
-            <el-button type="primary" style="margin-left: 20px;" @click="newBioFeatureItemVisible = true; generateBioFeatureItemName()">按月输入指标项</el-button>
+            <el-button type="primary" style="margin-left: 20px;" @click="newValueByMonthVisible = true; generateBioFeatureItemName()">按月输入指标项</el-button>
             <el-button type="primary" style="margin-left: 20px;" @click="newValueByYearVisible = true; generateBioFeatureItemName()">按年输入指标项</el-button>
+            <el-button type="primary" style="margin-left: 20px;" @click="valueCacheTableVisible = true; generateValueCacheTableData()">查看输入缓存</el-button>
             <!-- slice(start, end) 方法以新的数组对象，返回数组中被选中的元素。 -->
             <el-table
               :data="valueTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
@@ -121,6 +130,11 @@
                 width="80px"
               />
               <el-table-column
+                prop="saveTime"
+                label="保存时间"
+                width="160px"
+              />
+              <!-- <el-table-column
                 label="操作"
                 width="150px"
               >
@@ -128,7 +142,7 @@
                   <el-button type="text" size="small" @click="updateValueByYear(scope.row)">更改</el-button>
                   <el-button type="text" size="small" @click="deleteValue(scope.row)">删除</el-button>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
             <el-pagination
               :page-sizes="[5, 10, 15]"
@@ -140,7 +154,7 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
             />
-            <el-dialog title="输入指标项" :visible.sync="newBioFeatureItemVisible" style="text-align: center">
+            <el-dialog title="按月输入指标项" :visible.sync="newValueByMonthVisible" style="text-align: center">
               <el-form :model="newBioFeatureItemForm">
                 <el-form-item>
                   <span>选择指标项</span>
@@ -182,11 +196,11 @@
 
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="newBioFeatureItemVisible = false">取 消</el-button>
+                <el-button @click="newValueByMonthVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveBioFeatureInfo()">保 存</el-button>
               </div>
             </el-dialog>
-            <el-dialog title="输入指标项" :visible.sync="newValueByYearVisible" style="text-align: center">
+            <el-dialog title="按年输入指标项" :visible.sync="newValueByYearVisible" style="text-align: center">
               <el-form :model="newBioFeatureItemForm">
                 <el-form-item>
                   <span>选择指标项</span>
@@ -309,7 +323,112 @@
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="newValueByYearVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveValueByYear()">保 存</el-button>
+                <el-button type="primary" @click="saveValueCacheByYear()">保 存</el-button>
+              </div>
+            </el-dialog>
+            <el-dialog title="查看输入缓存" :visible.sync="valueCacheTableVisible" width="1300px">
+              <el-table
+                :data="valueCacheTableData.slice((currentPage2 - 1) * pagesize2, currentPage2 * pagesize2)"
+                border
+                style="margin-top: 20px;"
+              >
+                <el-table-column
+                  prop="year"
+                  label="年份"
+                  width="100px"
+                />
+                <el-table-column
+                  prop="itemName"
+                  label="指标名称"
+                />
+                <el-table-column
+                  prop="january"
+                  label="一月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="february"
+                  label="二月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="march"
+                  label="三月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="april"
+                  label="四月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="may"
+                  label="五月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="june"
+                  label="六月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="july"
+                  label="七月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="august"
+                  label="八月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="september"
+                  label="九月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="october"
+                  label="十月"
+                  width="50px"
+                />
+                <el-table-column
+                  prop="november"
+                  label="十一月"
+                  width="80px"
+                />
+                <el-table-column
+                  prop="december"
+                  label="十二月"
+                  width="80px"
+                />
+                <el-table-column
+                  prop="saveTime"
+                  label="保存时间"
+                  width="160px"
+                />
+                <el-table-column
+                  label="操作"
+                  width="150px"
+                >
+                  <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="updateValueCacheByYear(scope.row)">更改</el-button>
+                    <el-button type="text" size="small" @click="deleteValueCache(scope.row)">删除</el-button>
+                    <el-button type="text" size="small" @click="commitValueCache(scope.row)">提交</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                :page-sizes="[5, 10, 15]"
+                :current-page="currentPage2"
+                :page-size="pagesize2"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="valueCacheTableData.length"
+                style="text-align:center; margin-top: 50px;"
+                @size-change="handleSizeChange2"
+                @current-change="handleCurrentChange2"
+              />
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="valueCacheTableVisible = false">关 闭</el-button>
               </div>
             </el-dialog>
           </el-tab-pane>
@@ -322,7 +441,7 @@
 <script>
 import echarts from 'echarts'
 import { getItemNameList, getCombinedBioFeatureItemNameList, saveBioFeatureInfo, getCombinedBioFeatureData } from '@/api/bio_feature'
-import { saveCBFIValueByYear, getValueTableData, deleteValue } from '@/api/bio_feature'
+import { saveValueCacheByYear, getValueTableData, deleteValueCache, getValueCacheTableData, commitValueCache } from '@/api/bio_feature'
 import { Message, MessageBox } from 'element-ui'
 
 export default {
@@ -340,8 +459,9 @@ export default {
       },
       // 生命特征类指标列表
       combinedBioFeatureNameList: [],
-      newBioFeatureItemVisible: false,
+      newValueByMonthVisible: false,
       newValueByYearVisible: false,
+      valueCacheTableVisible: false,
       newBioFeatureItemForm: {
         itemName: '',
         hospitalName: '',
@@ -419,10 +539,23 @@ export default {
         december: ''
       },
       valueTableData: [],
+      valueCacheTableData: [],
       SItemName: '',
       SYear: '',
       currentPage: 1,
-      pagesize: 5
+      pagesize: 5,
+      currentPage2: 1,
+      pagesize2: 5,
+      shape: 'bar',
+      shapeList: [
+        {
+          value: 'bar',
+          label: '柱状图'
+        }, {
+          value: 'line',
+          label: '折线图'
+        }
+      ]
     }
   },
   created() {
@@ -433,12 +566,52 @@ export default {
     // this.initBioFeatureItemChart()
   },
   methods: {
+    commitValueCache(valueCache) {
+      MessageBox.confirm('确定提交该条记录?提交后不可随意修改', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        commitValueCache(valueCache).then((res) => {
+          Message.success({
+            message: res.msg || '提交失败！'
+          })
+          setTimeout(() => {
+            this.generateValueCacheTableData()
+            this.generateValueTableData()
+          }, 500)
+        }).catch(() => {
+          Message.warning({
+            message: '提交失败'
+          })
+        })
+      }).catch(() => {
+        Message.info({
+          message: '已取消提交'
+        })
+      })
+    },
+    generateValueCacheTableData() {
+      this.valueCacheTableData = []
+      var that = this
+      getValueCacheTableData(this.$store.getters.hospitalName).then((res) => {
+        that.valueCacheTableData = res.data
+      })
+    },
     handleSizeChange: function(size) {
       this.pagesize = size
       console.log(this.pagesize) // 每页下拉显示数据
     },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage
+      console.log(this.currentPage) // 点击第几页
+    },
+    handleSizeChange2: function(size) {
+      this.pagesize2 = size
+      console.log(this.pagesize) // 每页下拉显示数据
+    },
+    handleCurrentChange2: function(currentPage) {
+      this.currentPage2 = currentPage
       console.log(this.currentPage) // 点击第几页
     },
     // 保留方法，切换卡片时加载名称列表
@@ -514,7 +687,7 @@ export default {
           year: res.data.year
         }
       })
-      this.newBioFeatureItemVisible = false
+      this.newValueByMonthVisible = false
     },
     // 搜索指定生命特征类指标，并渲染echart
     searchCombinedBioFeature() {
@@ -549,6 +722,7 @@ export default {
     },
     // 初始化生命特征类指标echart
     initBioFeatureItemChart(item_name, valueList) {
+      var that = this
       var BFIC = echarts.init(this.$refs.bio_feature_item_chart)
       BFIC.setOption({
         title: {
@@ -566,21 +740,21 @@ export default {
         series: [
           {
             name: item_name,
-            type: 'bar',
-            itemStyle: {
-              label: {
-                formatter: '{b}/n{c}%'
-              }
-            },
+            type: that.shape,
+            // itemStyle: {
+            //   label: {
+            //     formatter: '{b}/n{c}%'
+            //   }
+            // },
             data: valueList
           }
         ]
       })
     },
     // 按年保存信息
-    saveValueByYear() {
+    saveValueCacheByYear() {
       this.newValueByYearForm.hospitalName = this.$store.getters.hospitalName
-      saveCBFIValueByYear(this.newValueByYearForm).then((res) => {
+      saveValueCacheByYear(this.newValueByYearForm).then((res) => {
         Message({
           message: res.msg,
           type: 'success'
@@ -588,25 +762,26 @@ export default {
       })
       this.newValueByYearVisible = false
       setTimeout(() => {
-        this.generateValueTableData()
+        this.generateValueCacheTableData()
       }, 500)
     },
-    updateValueByYear(value) {
+    updateValueCacheByYear(value) {
       this.newValueByYearVisible = true
       this.newValueByYearForm = value
     },
-    deleteValue(value) {
+    deleteValueCache(value) {
       MessageBox.confirm('确定删除该条记录?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteValue(value).then((res) => {
+        deleteValueCache(value).then((res) => {
           Message.success({
             message: res.msg || '删除失败！'
           })
           setTimeout(() => {
             this.generateValueTableData()
+            this.generateValueCacheTableData()
           }, 500)
         }).catch(() => {
           Message.warning({

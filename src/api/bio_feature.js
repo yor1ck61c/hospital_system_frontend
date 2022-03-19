@@ -76,9 +76,9 @@ export function addCombinedItem(data) {
   })
 }
 
-export function saveCBFIValueByYear(data) {
+export function saveValueCacheByYear(data) {
   return request({
-    url: '/bio_feature/save_combined',
+    url: '/bio_feature/save_combined_cache',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -92,9 +92,17 @@ export function getValueTableData(data) {
   })
 }
 
-export function deleteValue(data) {
+export function getValueCacheTableData(data) {
   return request({
-    url: '/bio_feature/value',
+    url: '/bio_feature/value_cache',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function deleteValueCache(data) {
+  return request({
+    url: '/bio_feature/value_cache',
     method: 'delete',
     data: JSON.stringify(data)
   })
@@ -105,5 +113,29 @@ export function generateOtherHospitalData(userId) {
     url: '/bio_feature/other',
     method: 'post',
     data: JSON.stringify(userId)
+  })
+}
+
+export function commitValueCache(data) {
+  return request({
+    url: '/bio_feature/commit',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function updateValueByYear(data) {
+  return request({
+    url: '/bio_feature/update_value',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function deleteValue(data) {
+  return request({
+    url: '/bio_feature/delete_value',
+    method: 'delete',
+    data: JSON.stringify(data)
   })
 }

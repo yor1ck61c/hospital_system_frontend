@@ -316,6 +316,13 @@ export default {
     },
     // 搜索指定指标项
     searchItem() {
+      if (this.itemName === '') {
+        Message({
+          message: '请先选择指标',
+          type: 'error'
+        })
+        return
+      }
       for (var i = 0; i < this.itemNameTableData.length; i++) {
         if (this.itemNameTableData[i].itemName === this.itemName) {
           var obj = this.itemNameTableData[i]
@@ -327,6 +334,13 @@ export default {
       this.itemName = ''
     },
     searchCombinedItem(name) {
+      if (name === '') {
+        Message({
+          message: '请先选择指标',
+          type: 'error'
+        })
+        return
+      }
       for (var i = 0; i < this.combinedItemNameTableData.length; i++) {
         if (this.combinedItemNameTableData[i].itemName === name) {
           var obj = this.combinedItemNameTableData[i]
