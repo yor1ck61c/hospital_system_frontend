@@ -59,11 +59,12 @@
               :data="valueTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
               border
               style="margin-top: 20px;"
+              size="mini"
             >
               <el-table-column
                 prop="year"
                 label="年份"
-                width="100px"
+                width="55px"
               />
               <el-table-column
                 prop="itemName"
@@ -72,62 +73,62 @@
               <el-table-column
                 prop="january"
                 label="一月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="february"
                 label="二月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="march"
                 label="三月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="april"
                 label="四月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="may"
                 label="五月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="june"
                 label="六月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="july"
                 label="七月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="august"
                 label="八月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="september"
                 label="九月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="october"
                 label="十月"
-                width="50px"
+                width="70px"
               />
               <el-table-column
                 prop="november"
                 label="十一月"
-                width="80px"
+                width="70px"
               />
               <el-table-column
                 prop="december"
                 label="十二月"
-                width="80px"
+                width="70px"
               />
               <el-table-column
                 prop="saveTime"
@@ -331,11 +332,12 @@
                 :data="valueCacheTableData.slice((currentPage2 - 1) * pagesize2, currentPage2 * pagesize2)"
                 border
                 style="margin-top: 20px;"
+                size="mini"
               >
                 <el-table-column
                   prop="year"
                   label="年份"
-                  width="100px"
+                  width="50px"
                 />
                 <el-table-column
                   prop="itemName"
@@ -344,67 +346,67 @@
                 <el-table-column
                   prop="january"
                   label="一月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="february"
                   label="二月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="march"
                   label="三月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="april"
                   label="四月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="may"
                   label="五月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="june"
                   label="六月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="july"
                   label="七月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="august"
                   label="八月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="september"
                   label="九月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="october"
                   label="十月"
-                  width="50px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="november"
                   label="十一月"
-                  width="80px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="december"
                   label="十二月"
-                  width="80px"
+                  width="70px"
                 />
                 <el-table-column
                   prop="saveTime"
                   label="保存时间"
-                  width="160px"
+                  width="135px"
                 />
                 <el-table-column
                   label="操作"
@@ -660,12 +662,9 @@ export default {
         var key = keys[i]
         var nValue = numerator[key]
         var dValue = denominator[key]
-        if (nValue == null) {
-          nValue = 0
-        }
-        // 防止除0异常
-        if (dValue == null) {
-          dValue = 1
+
+        if (nValue == null || dValue == null) {
+          continue
         }
         valueList.push((nValue / dValue) * 100)
       }
