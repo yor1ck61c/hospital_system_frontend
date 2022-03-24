@@ -52,3 +52,11 @@ export function handleUpdate(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function deleteUserById(userId) {
+  return request({
+    url: '/user/delete',
+    method: 'delete',
+    data: JSON.stringify(userId)
+  })
+}

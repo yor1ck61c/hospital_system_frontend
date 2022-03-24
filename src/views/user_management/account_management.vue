@@ -56,6 +56,7 @@
         >
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="updateUser(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="deleteUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -151,8 +152,8 @@
 </template>
 
 <script>
-import { getAccountInfoList, generateHospitalNameList, handleUpdate } from '@/api/user'
-import { Message } from 'element-ui'
+import { getAccountInfoList, generateHospitalNameList, handleUpdate, deleteUserById } from '@/api/user'
+import { Message, MessageBox } from 'element-ui'
 
 export default {
   name: 'OtherHospitalInfo',
@@ -336,6 +337,29 @@ export default {
           })
           return false
         }
+      })
+    },
+    deleteUser(userInfo) {
+      var that = this
+      MessageBox.confirm('确定删除该条记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUserById(userInfo.id).then((res) => {
+          Message.success({
+            message: res.msg || '删除失败！'
+          })
+          that.getAcccountInfoTableData()
+        }).catch(() => {
+          Message.warning({
+            message: '删除失败'
+          })
+        })
+      }).catch(() => {
+        Message.info({
+          message: '已取消删除'
+        })
       })
     }
   }

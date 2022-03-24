@@ -68,6 +68,7 @@
           <el-dialog
             title="添加指标项"
             :visible.sync="addCombinedItemVisible"
+            center="true"
           >
             <el-form ref="addRef" :model="newCombinedItemForm" :rules="addRule">
               <el-form-item label="指标名" :label-width="formLabelWidth" prop="itemName">
@@ -92,6 +93,16 @@
                 <el-select v-model="newCombinedItemForm.denominator" filterable clearable placeholder="请选择公式分母指标名" style="width: 300px;">
                   <el-option
                     v-for="item in itemNameList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="比率" :label-width="formLabelWidth" prop="ratio">
+                <el-select v-model="newCombinedItemForm.ratio" filterable clearable placeholder="请选择比率" style="width: 300px;">
+                  <el-option
+                    v-for="item in ratioList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -206,6 +217,7 @@ export default {
         itemName: '',
         numerator: '',
         denominator: '',
+        ratio: '100',
         definition: '',
         description: '',
         meaning: ''
@@ -216,10 +228,13 @@ export default {
           { required: true, message: '请输入指标名', trigger: 'blur' }
         ],
         numerator: [
-          { required: true, message: '请输入公式分子指标项', trigger: 'blur' }
+          { required: true, message: '请输入公式分子指标项', trigger: 'change' }
         ],
         denominator: [
-          { required: true, message: '请选择公式分母指标项', trigger: 'blur' }
+          { required: true, message: '请选择公式分母指标项', trigger: 'change' }
+        ],
+        ratio: [
+          { required: true, message: '请选择比率', trigger: 'change' }
         ],
         definition: [
           { required: true, message: '请输入指标定义', trigger: 'blur' }
@@ -230,7 +245,17 @@ export default {
         meaning: [
           { required: true, message: '请输入指标意义', trigger: 'blur' }
         ]
-      }
+      },
+      ratioList: [{
+        value: '100',
+        label: '100%'
+      }, {
+        value: '1000',
+        label: '1000%'
+      }, {
+        value: '10000',
+        label: '10000%'
+      }]
     }
   },
   mounted() {

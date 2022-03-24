@@ -530,7 +530,7 @@ export default {
       })
     },
     // 获取echarts展示的数据
-    getEchartsValueList(numerator, denominator) {
+    getEchartsValueList(numerator, denominator, ratio) {
       var valueList = []
       var keys = Object.keys(numerator)
 
@@ -541,7 +541,7 @@ export default {
         if (nValue == null || dValue == null) {
           continue
         }
-        valueList.push((nValue / dValue) * 100)
+        valueList.push((nValue / dValue) * ratio)
       }
       return valueList
     },
@@ -581,7 +581,7 @@ export default {
           type: 'success',
           duration: 2 * 1000
         })
-        var valueList = that.getEchartsValueList(data.numerator, data.denominator)
+        var valueList = that.getEchartsValueList(data.numerator, data.denominator, data.ratio)
         that.initBioFeatureItemChart(data.item_name, valueList)
       })
     },
