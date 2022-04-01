@@ -139,3 +139,11 @@ export function deleteValue(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function getSingleItemData(data) {
+  return request({
+    url: '/bio_feature/single_item',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
