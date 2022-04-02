@@ -817,7 +817,7 @@ export default {
         }
         valueList.push(
           {
-            'value': value + '%',
+            'value': value,
             'name': (i + 1) + '月'
           })
       }
@@ -909,6 +909,7 @@ export default {
         // eslint-disable-next-line eqeqeq
         if (that.singleItemEchartShape == 'pie') {
           valueList = that.getSingleItemPieValueList(data.values)
+          alert(valueList[0])
           that.initSingleItemPieChart(data.item_name, valueList)
           return
         }
@@ -1006,7 +1007,6 @@ export default {
       })
     },
     initSingleItemPieChart(item_name, valueList) {
-      var that = this
       var SIPC = echarts.init(this.$refs.single_item_chart)
       SIPC.setOption({
         title: {
@@ -1020,7 +1020,7 @@ export default {
         series: [
           {
             name: item_name,
-            type: that.singleItemEchartShape,
+            type: 'pie',
             data: valueList
           }
         ]
