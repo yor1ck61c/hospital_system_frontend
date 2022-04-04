@@ -38,7 +38,8 @@ module.exports = {
     },
     proxy: {
       '/api': { // alias
-        target: 'http://localhost:8088', // 要访问的路径
+        target: 'http://175.178.244.223:8088', // 要访问的路径
+        // target: 'http://localhost:8088',
         changOrigin: true, // 允许跨域
         pathRewrite: {
           '^/api': '' // 请求的时候使用这个api就可以

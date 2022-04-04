@@ -128,16 +128,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link', roles: ['super_admin'] }
-      }
-    ]
-  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

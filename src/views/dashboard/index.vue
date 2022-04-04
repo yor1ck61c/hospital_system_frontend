@@ -909,7 +909,6 @@ export default {
         // eslint-disable-next-line eqeqeq
         if (that.singleItemEchartShape == 'pie') {
           valueList = that.getSingleItemPieValueList(data.values)
-          alert(valueList[0])
           that.initSingleItemPieChart(data.item_name, valueList)
           return
         }
