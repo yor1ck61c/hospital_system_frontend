@@ -87,20 +87,46 @@ export const asyncRoutes = [
         path: 'management',
         name: 'account_management',
         component: () => import('@/views/user_management/account_management'),
-        meta: { title: '医院信息管理', icon: 'table', roles: ['admin', 'super_admin'] }
+        meta: { title: '医院信息管理', icon: 'table', roles: ['super_admin'] }
+      }
+    ]
+  },
+  {
+    path: '/data_analyze',
+    name: 'data_analyze',
+    component: Layout,
+    meta: { title: '数据分析', icon: 'table', roles: ['super_admin'] },
+    children: [
+      {
+        path: '/count',
+        name: 'count',
+        component: () => import('@/views/data_analyze/data_count'),
+        meta: { title: '数据统计', icon: 'table', roles: ['super_admin'] }
+      },
+      {
+        path: '/compare',
+        name: 'compare',
+        component: () => import('@/views/data_analyze/data_compare'),
+        meta: { title: '数据对比', icon: 'table', roles: ['super_admin'] }
+      },
+      {
+        path: '/rank',
+        name: 'rank',
+        component: () => import('@/views/data_analyze/data_rank'),
+        meta: { title: '数据排行', icon: 'table', roles: ['super_admin'] }
       }
     ]
   },
   {
     path: '/authority',
-    name: 'authority_management',
+    name: 'authority',
     component: Layout,
     children: [
       {
         path: 'management',
         name: 'authority_management',
         component: () => import('@/views/user_management/authority_management'),
-        meta: { title: '权限管理', icon: 'table', roles: ['sub_center', 'center'] }
+        meta: { title: '权限管理', icon: 'table', roles: ['super_admin', 'sub_center', 'center'] }
       }
     ]
   },
@@ -112,7 +138,7 @@ export const asyncRoutes = [
       {
         path: 'item',
         component: () => import('@/views/data_item_management/data_item_management'),
-        meta: { title: '指标管理', icon: 'table', roles: ['admin', 'super_admin'] }
+        meta: { title: '指标管理', icon: 'table', roles: ['super_admin'] }
       }
     ]
   },
@@ -124,7 +150,28 @@ export const asyncRoutes = [
       {
         path: 'management',
         component: () => import('@/views/center/index'),
-        meta: { title: '中心管理', icon: 'table', roles: ['admin', 'super_admin'] }
+        meta: { title: '中心管理', icon: 'table', roles: ['super_admin'] }
+      }
+    ]
+  },
+  // 跳转至指定网站
+  {
+    path: '/wjw',
+    component: Layout,
+    children: [
+      {
+        path: 'http://wjw.hunan.gov.cn/',
+        meta: { title: '湖南省卫生健康委员会', icon: 'link' }
+      }
+    ]
+  },
+  {
+    path: '/external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://xyane2.csu.edu.cn/',
+        meta: { title: '湘雅麻醉与重症医学网', icon: 'link' }
       }
     ]
   },

@@ -10,7 +10,8 @@
             :value="item.value"
           />
         </el-select>
-        <el-button type="primary" style="margin-left: 20px;" @click="searchHospital(hospitalName)">搜索</el-button>
+        <el-button type="primary" style="margin-left: 30px;" @click="searchHospital(hospitalName)">搜索</el-button>
+        <el-button type="primary" style="margin-left: 30px;" @click="goToRegisterPage()">新增用户</el-button>
       </div>
     </el-header>
     <el-main>
@@ -74,6 +75,7 @@
     <el-dialog
       title="更改用户信息"
       :visible.sync="updateUserInfoVisible"
+      center
     >
       <el-form ref="updateRef" :model="userInfoForm" :rules="AccountRule">
         <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
@@ -207,11 +209,11 @@ export default {
           value: '省级',
           label: '省级'
         }, {
-          value: '地级',
-          label: '地级'
-        }, {
           value: '市级',
           label: '市级'
+        }, {
+          value: '县级',
+          label: '县级'
         }
       ],
       centerType: [
@@ -236,8 +238,8 @@ export default {
         value: '妇幼医院',
         label: '妇幼医院'
       }, {
-        value: '民营医院',
-        label: '民营医院'
+        value: '非公立医院',
+        label: '非公立医院'
       }]
     }
   },
@@ -360,6 +362,11 @@ export default {
         Message.info({
           message: '已取消删除'
         })
+      })
+    },
+    goToRegisterPage() {
+      this.$router.push({
+        path: '/register'
       })
     }
   }

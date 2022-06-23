@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '医院麻醉质量管理系统',
+  title: '湖南省麻醉医疗质量控制管理系统',
 
   /**
    * @type {boolean} true | false

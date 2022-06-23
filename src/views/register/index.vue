@@ -129,7 +129,7 @@
         <el-select
           v-model="registerForm.centerType"
           filterable
-          placeholder="请选择是否为中心医院"
+          placeholder="请选择是否为分中心/主中心"
           style="width: 90%;"
         >
           <el-option
@@ -219,8 +219,8 @@ export default {
         avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         introduction: '',
         hospitalName: '',
-        hospitalLevel: '', // 医院等级：省级/地级/县级
-        hospitalType: '', // 医院类型：综合/中医/妇幼/民营
+        hospitalLevel: '', // 医院等级：省级/市级/县级/无
+        hospitalType: '', // 医院类型：综合/中医/妇幼/非公益/无
         centerType: '', // 中心类型，是否为主中心/分中心。主中心：2 分中心：1 普通医院：0
         centerId: ''
       },
@@ -244,7 +244,7 @@ export default {
           { required: true, message: '请选择医院类型', trigger: 'change' }
         ],
         centerType: [
-          { required: true, message: '请选择是否为中心医院', trigger: 'change' }
+          { required: true, message: '请选择是否为分中心/主中心', trigger: 'change' }
         ],
         centerId: [
           { required: true, message: '请选择所属中心名称', trigger: 'change' }
@@ -254,11 +254,14 @@ export default {
         value: '省级',
         label: '省级'
       }, {
-        value: '地级',
-        label: '地级'
+        value: '市级',
+        label: '市级'
       }, {
         value: '县级',
         label: '县级'
+      }, {
+        value: '无',
+        label: '无'
       }],
       hospitalTypeOptions: [{
         value: '综合医院',
@@ -270,18 +273,21 @@ export default {
         value: '妇幼医院',
         label: '妇幼医院'
       }, {
-        value: '民营医院',
-        label: '民营医院'
+        value: '非公立医院',
+        label: '非公立医院'
+      }, {
+        value: '无',
+        label: '无'
       }],
       centerTypeOptions: [{
         value: '0',
-        label: '非中心医院'
+        label: '普通医院'
       }, {
         value: '1',
-        label: '分中心医院'
+        label: '分中心账号'
       }, {
         value: '2',
-        label: '主中心医院'
+        label: '主中心账号'
       }],
       loading: false,
       passwordType: 'password',

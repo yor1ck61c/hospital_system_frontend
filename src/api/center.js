@@ -70,3 +70,11 @@ export function generateTempAuthTableData(data) {
     data: JSON.stringify(data)
   })
 }
+
+export function getHospitalInfoListByCenterId(data) {
+  return request({
+    url: '/center/hospital_list',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}

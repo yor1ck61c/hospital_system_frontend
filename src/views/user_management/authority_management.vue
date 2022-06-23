@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div>
-        <el-select v-model="centerId" filterable clearable placeholder="请选择中心名称" style="width: 20%; margin-left: 50px; margin-top: 30px;">
+        <el-select v-model="centerId" size="mini" filterable clearable placeholder="请选择中心名称" style="width: 12%; margin-left: 50px; margin-top: 30px;">
           <el-option
             v-for="item in centerNameList"
             :key="item.centerId"
@@ -10,7 +10,7 @@
             :value="item.centerId"
           />
         </el-select>
-        <el-select v-model="hospitalName" filterable clearable placeholder="请选择医院" style="width: 20%; margin-left: 50px; margin-top: 30px;" @focus="generateHosptialNameList">
+        <el-select v-model="hospitalName" size="mini" filterable clearable placeholder="请选择医院" style="width: 12%; margin-left: 20px; margin-top: 30px;" @focus="generateHosptialNameList">
           <el-option
             v-for="item in hospitalNameList"
             :key="item.id"
@@ -18,7 +18,7 @@
             :value="item.hospitalName"
           />
         </el-select>
-        <el-button type="primary" style="margin-left: 20px;" @click="searchHospital()">搜索</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 20px;" @click="searchHospital()">搜索</el-button>
       </div>
     </el-header>
     <el-main>
@@ -26,6 +26,7 @@
         :data="hospitalTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         border
         style="width: 700px; margin-left: 50px;margin-top: 20px;"
+        size="mini"
       >
         <el-table-column
           prop="hospitalName"
@@ -61,6 +62,7 @@
       <el-dialog
         title="授予查看权限"
         :visible.sync="grantVisible"
+        center
       >
         <el-form :model="grantInfoForm">
           <el-select v-model="centerId2" filterable clearable placeholder="请选择中心名称" style="width: 20%; margin-left: 50px; margin-top: 30px;">
@@ -88,6 +90,7 @@
       <el-dialog
         title="临时权限列表"
         :visible.sync="deleteVisible"
+        center
       >
         <el-table
           :data="tempAuthenticationTableData"

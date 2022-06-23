@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h1 class="title">欢迎使用医院麻醉质量管理系统</h1>
+        <h1 class="title">湖南省麻醉医疗质量控制管理系统</h1>
       </div>
 
       <el-form-item prop="username">
@@ -43,9 +43,9 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <div style="width: 100%; text-align: center;">
+      <!-- <div style="width: 100%; text-align: center;">
         <a style="color: white" @click="goToRegisterPage()">还没有账号?点击注册</a>
-      </div>
+      </div> -->
 
     </el-form>
   </div>

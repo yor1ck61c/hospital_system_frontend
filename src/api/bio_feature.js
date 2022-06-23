@@ -2,7 +2,7 @@ import request from '@/utils/get-resource-req'
 
 export function getItemNameList() {
   return request({
-    url: '/bio_feature/name_list',
+    url: '/bio_feature/single_item_name_list',
     method: 'get'
   })
 }
@@ -78,7 +78,7 @@ export function addCombinedItem(data) {
 
 export function saveValueCacheByYear(data) {
   return request({
-    url: '/bio_feature/save_combined_cache',
+    url: '/bio_feature/save_single_cache',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -110,7 +110,7 @@ export function deleteValueCache(data) {
 
 export function generateOtherHospitalData(userId) {
   return request({
-    url: '/bio_feature/other',
+    url: '/bio_feature/other_hospital_info',
     method: 'post',
     data: JSON.stringify(userId)
   })
@@ -118,7 +118,7 @@ export function generateOtherHospitalData(userId) {
 
 export function commitValueCache(data) {
   return request({
-    url: '/bio_feature/commit',
+    url: '/bio_feature/commit_cache',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -143,6 +143,15 @@ export function deleteValue(data) {
 export function getSingleItemData(data) {
   return request({
     url: '/bio_feature/single_item',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+// 批量提交缓存数据
+export function batchCommitValueCacheByHospitalName(data) {
+  return request({
+    url: '/bio_feature/batch_commit_cache',
     method: 'post',
     data: JSON.stringify(data)
   })

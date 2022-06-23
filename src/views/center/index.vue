@@ -18,7 +18,7 @@
       <el-table
         :data="centerTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         border
-        style="width: 700px; margin-left: 50px;margin-top: 20px;"
+        style="width: 1000px; margin-left: 50px;margin-top: 20px;"
       >
         <el-table-column
           prop="centerId"
@@ -38,6 +38,7 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="updateCenter(scope.row)">更改</el-button>
             <el-button type="text" size="small" @click="deleteCenter(scope.row)">删除</el-button>
+            <el-button type="text" size="small" @click="findHospitalList(scope.row)">查看属于该中心的医院列表</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,6 +57,7 @@
       title="新增中心"
       :visible.sync="addCenterVisible"
       style="text-align: center"
+      center
     >
       <el-form ref="addRef" :model="newCenterForm" :rules="addRule">
         <el-form-item label="中心名称" :label-width="formLabelWidth" prop="centerName">
@@ -86,6 +88,7 @@
       title="更改中心信息"
       :visible.sync="updateCenterVisible"
       style="text-align: center"
+      center
     >
       <el-form ref="updateRef" :model="newCenterForm" :rules="addRule">
         <el-form-item label="中心名称" :label-width="formLabelWidth" prop="centerName">
@@ -112,19 +115,68 @@
         <el-button type="primary" @click="updateCenterInfo('updateRef')">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      :title="tableCenterName"
+      :visible.sync="hospitalListTableVisible"
+      style="text-align: center"
+      center
+    >
+      <el-table
+        :data="hospitalInfoList.slice((currentPage2 - 1) * pagesize2, currentPage2 * pagesize2)"
+        border
+      >
+        <!-- style="width: 1000px; margin-left: 50px;margin-top: 20px;" -->
+        <el-table-column
+          prop="id"
+          label="医院用户id"
+        />
+        <el-table-column
+          prop="hospitalName"
+          label="医院名称"
+        />
+        <el-table-column
+          prop="hospitalType"
+          label="医院类型"
+        />
+        <el-table-column
+          prop="hospitalLevel"
+          label="医院等级"
+        />
+      </el-table>
+      <el-pagination
+        :page-sizes="[5, 10]"
+        :current-page="currentPage2"
+        :page-size="pagesize2"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="hospitalInfoList.length"
+        style="margin-left: 200px; margin-top: 50px;"
+        @size-change="handleSizeChange2"
+        @current-change="handleCurrentChange2"
+      />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="hospitalListTableVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
 import { Message, MessageBox } from 'element-ui'
-import { addCenter, updateCenter, getCenterTableData, deleteCenter } from '@/api/center'
+import { addCenter, updateCenter, getCenterTableData, deleteCenter, getHospitalInfoListByCenterId } from '@/api/center'
 export default {
   name: 'CenterManagement',
   data() {
     return {
       currentPage: 1,
       pagesize: 5,
+      currentPage2: 1,
+      pagesize2: 5,
+      // 查找中心时输入的中心名称
       centerName: '',
+      // 表格title显示的中心名称
+      tableCenterName: '',
+      // 医院列表table的数据，包括医院id，医院名称，医院类型
+      hospitalInfoList: '',
       centerNameList: [],
       centerTableData: [],
       newCenterForm: {
@@ -149,7 +201,8 @@ export default {
           { required: true, message: '请选择中心类型', trigger: 'blur' }
         ]
       },
-      updateCenterVisible: false
+      updateCenterVisible: false,
+      hospitalListTableVisible: false
     }
   },
   mounted() {
@@ -163,6 +216,14 @@ export default {
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage
       console.log(this.currentPage) // 点击第几页
+    },
+    handleSizeChange2: function(size) {
+      this.pagesize2 = size
+      console.log(this.pagesize2) // 每页下拉显示数据
+    },
+    handleCurrentChange2: function(currentPage) {
+      this.currentPage2 = currentPage
+      console.log(this.currentPage2) // 点击第几页
     },
     generateCenterTable() {
       var that = this
@@ -194,6 +255,16 @@ export default {
     updateCenter(center) {
       this.updateCenterVisible = true
       this.newCenterForm = center
+    },
+    findHospitalList(center) {
+      this.tableCenterName = center.centerName
+      this.hospitalListTableVisible = true
+      var that = this
+      getHospitalInfoListByCenterId(center.centerId).then((res) => {
+        that.hospitalInfoList = res.data
+      })
+      // 打印hospitalInfoList的长度
+      console.log(this.hospitalInfoList.length)
     },
     deleteCenter(data) {
       MessageBox.confirm('确定删除该条记录?', '提示', {
