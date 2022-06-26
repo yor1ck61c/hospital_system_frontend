@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" type="border-card" style="margin-left: 40px; margin-top: 30px; width: 1250px;" @tab-click="handleClick">
           <el-tab-pane label="单个指标信息排行(图表)" name="first">
             <div>
-              <el-select v-model="rankSingleVO.itemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in singleItemNameList"
                   :key="item.itemName"
@@ -13,7 +13,7 @@
                   :value="item.itemName"
                 />
               </el-select>
-              <el-select v-model="rankSingleVO.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.year" size="mini" filterable clearable placeholder="选择年份" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -21,41 +21,9 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="rankSingleVO.month" size="mini" filterable clearable placeholder="请选择月份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.month" size="mini" filterable clearable placeholder="选择月份" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in month"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-select v-model="rankSingleVO.centerId" size="mini" filterable clearable placeholder="请选择中心名称" style="width: 12%; margin-left: 5px;">
-                <el-option
-                  v-for="item in centerInfoList"
-                  :key="item.centerId"
-                  :label="item.centerName"
-                  :value="item.centerId"
-                />
-              </el-select>
-              <el-select v-model="rankSingleVO.hospitalLevel" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
-                <el-option
-                  v-for="item in hospitalLevelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-select v-model="rankSingleVO.hospitalType" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
-                <el-option
-                  v-for="item in hospitalTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-select v-model="rankSingleVO.order" size="mini" filterable clearable placeholder="请选择排序类型" style="width: 12%; margin-left: 5px;">
-                <el-option
-                  v-for="item in orderOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -63,43 +31,8 @@
               </el-select>
               <el-button type="primary" size="mini" style="margin-left: 5px;" @click="rankSingleItem()">搜索</el-button>
             </div>
-            <div ref="compare_single" style="width: 1000px; height: 500px; margin-top: 20px;" />
-          </el-tab-pane>
-          <el-tab-pane label="组合指标信息排行（图表）" name="second">
-            <div>
-              <el-select v-model="typeId" size="mini" filterable clearable placeholder="请选择指标类型" style="width: 12%; margin-left: 5px;">
-                <el-option
-                  v-for="item in typeList"
-                  :key="item.typeId"
-                  :label="item.typeName"
-                  :value="item.typeId"
-                />
-              </el-select>
-              <el-select v-model="rankCombinedVO.itemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%; margin-left: 5px;" @focus="generateCombinedItemNameList">
-                <el-option
-                  v-for="item in combinedItemNameList"
-                  :key="item.itemName"
-                  :label="item.itemName"
-                  :value="item.itemName"
-                />
-              </el-select>
-              <el-select v-model="rankCombinedVO.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
-                <el-option
-                  v-for="item in year"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-select v-model="rankCombinedVO.month" size="mini" filterable clearable placeholder="请选择月份" style="width: 10%; margin-left: 5px;">
-                <el-option
-                  v-for="item in month"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-select v-model="rankCombinedVO.centerId" size="mini" filterable clearable placeholder="请选择中心名称" style="width: 12%; margin-left: 5px;">
+            <div style="margin-top: 10px;">
+              <el-select v-model="rankSingleVO.centerId" size="mini" filterable clearable placeholder="选择中心名称" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in centerInfoList"
                   :key="item.centerId"
@@ -107,7 +40,7 @@
                   :value="item.centerId"
                 />
               </el-select>
-              <el-select v-model="rankCombinedVO.hospitalLevel" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.hospitalLevel" size="mini" filterable clearable placeholder="选择医院等级" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalLevelOptions"
                   :key="item.value"
@@ -115,7 +48,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="rankCombinedVO.hospitalType" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.hospitalType" size="mini" filterable clearable placeholder="选择医院类型" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalTypeOptions"
                   :key="item.value"
@@ -123,7 +56,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="rankCombinedVO.order" size="mini" filterable clearable placeholder="请选择排序类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-model="rankSingleVO.order" size="mini" filterable clearable placeholder="选择排序类型" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in orderOptions"
                   :key="item.value"
@@ -131,7 +64,78 @@
                   :value="item.value"
                 />
               </el-select>
+            </div>
+            <div ref="compare_single" style="width: 1000px; height: 500px; margin-top: 20px;" />
+          </el-tab-pane>
+          <el-tab-pane label="组合指标信息排行（图表）" name="second">
+            <div>
+              <el-select v-model="typeId" size="mini" filterable clearable placeholder="选择指标类型" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in typeList"
+                  :key="item.typeId"
+                  :label="item.typeName"
+                  :value="item.typeId"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 12%; margin-left: 5px;" @focus="generateCombinedItemNameList">
+                <el-option
+                  v-for="item in combinedItemNameList"
+                  :key="item.itemName"
+                  :label="item.itemName"
+                  :value="item.itemName"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.year" size="mini" filterable clearable placeholder="选择年份" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in year"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.month" size="mini" filterable clearable placeholder="选择月份" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in month"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
               <el-button type="primary" size="mini" style="margin-left: 5px;" @click="rankCombinedItem()">搜索</el-button>
+            </div>
+            <div style="margin-top: 10px;">
+              <el-select v-model="rankCombinedVO.centerId" size="mini" filterable clearable placeholder="选择中心名称" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in centerInfoList"
+                  :key="item.centerId"
+                  :label="item.centerName"
+                  :value="item.centerId"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.hospitalLevel" size="mini" filterable clearable placeholder="选择医院等级" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in hospitalLevelOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.hospitalType" size="mini" filterable clearable placeholder="选择医院类型" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in hospitalTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-select v-model="rankCombinedVO.order" size="mini" filterable clearable placeholder="选择排序类型" style="width: 12%; margin-left: 5px;">
+                <el-option
+                  v-for="item in orderOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </div>
             <div ref="compare_combined" style="width: 1000px; height: 500px; margin-top: 20px;" />
           </el-tab-pane>
@@ -390,6 +394,8 @@ export default {
           trigger: 'axis'
         },
         legend: {
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
@@ -441,18 +447,20 @@ export default {
           trigger: 'axis',
           formatter: itemName + '<br />' + '{b}: {c}%'
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           // type: 'category',

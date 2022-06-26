@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" type="border-card" style="margin-left: 50px; margin-top: 50px; width: 1000px;" @tab-click="handleClick">
       <el-tab-pane label="单个指标管理" name="single">
         <div>
-          <el-select v-model="itemName" filterable clearable placeholder="请选择单个指标" style="width: 200px; margin-top: 30px;" @focus="generateItemNameTableData">
+          <el-select v-model="itemName" size="mini" filterable clearable placeholder="请选择单个指标" style="width: 200px; margin-top: 30px;" @focus="generateItemNameTableData">
             <el-option
               v-for="item in itemNameList"
               :key="item.value"
@@ -11,13 +11,14 @@
               :value="item.value"
             />
           </el-select>
-          <el-button type="primary" style="margin-left: 20px;" @click="searchItem()">搜索</el-button>
+          <el-button type="primary" size="mini" style="margin-left: 10px;" @click="searchItem()">搜索</el-button>
           <el-input
             v-model="bioFeatureItem.itemName"
+            size="mini"
             placeholder="请输入要添加的单个指标名称"
             style="width: 200px; margin-left: 20px;"
           />
-          <el-button type="primary" style="margin-left: 20px;" @click="addSingleItem()">添加单个指标</el-button>
+          <el-button type="primary" size="mini" style="margin-left: 10px;" @click="addSingleItem()">添加单个指标</el-button>
           <el-table
             :data="itemNameTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
             border
@@ -55,7 +56,7 @@
       </el-tab-pane>
       <el-tab-pane label="指标项管理" name="double">
         <div>
-          <el-select v-model="combinedItemName" filterable clearable placeholder="请选择指标" style="width: 200px; margin-top: 30px;" @focus="generateCombinedItemNameTableData">
+          <el-select v-model="combinedItemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 150px; margin-top: 10px;" @focus="generateCombinedItemNameTableData">
             <el-option
               v-for="item in combinedItemNameList"
               :key="item.value"
@@ -63,8 +64,8 @@
               :value="item.value"
             />
           </el-select>
-          <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedItem(combinedItemName)">搜索</el-button>
-          <el-button type="primary" style="margin-left: 20px;" @click="addCombinedItemVisible = true">添加指标项</el-button>
+          <el-button type="primary" size="mini" style="margin-left: 10px;" @click="searchCombinedItem(combinedItemName)">搜索</el-button>
+          <el-button type="primary" size="mini" style="margin-left: 10px;" @click="addCombinedItemVisible = true">添加指标项</el-button>
           <el-dialog
             title="添加指标项"
             :visible.sync="addCombinedItemVisible"

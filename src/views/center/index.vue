@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div>
-        <el-select v-model="centerName" filterable clearable placeholder="请选择中心名称" style="width: 20%; margin-left: 50px; margin-top: 30px;" @focus="generateCenterTable">
+        <el-select v-model="centerName" size="mini" filterable clearable placeholder="请选择中心名称" style="width: 15%; margin-left: 50px; margin-top: 30px;" @focus="generateCenterTable">
           <el-option
             v-for="item in centerNameList"
             :key="item.centerId"
@@ -10,8 +10,8 @@
             :value="item.centerName"
           />
         </el-select>
-        <el-button type="primary" style="margin-left: 20px;" @click="searchCenter()">搜索</el-button>
-        <el-button type="primary" style="margin-left: 20px;" @click="addCenterVisible = true">新增中心</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 10px;" @click="searchCenter()">搜索</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 10px;" @click="addCenterVisible = true">新增中心</el-button>
       </div>
     </el-header>
     <el-main>

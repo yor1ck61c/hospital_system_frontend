@@ -4,7 +4,7 @@
       <el-col :span="24">
         <el-tabs v-model="activeName" type="border-card" style="margin-left: 40px; margin-top: 30px; width: 1250px;" @tab-click="handleClick">
           <el-tab-pane label="数据采集" name="first">
-            <el-select v-model="SItemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;" @focus="generateBioFeatureItemName()">
+            <el-select v-model="SItemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;" @focus="generateBioFeatureItemName(); generateValueTableData()">
               <el-option
                 v-for="item in bioFeatureItemNameList"
                 :key="item.value"
@@ -12,7 +12,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="SYear" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 20px;" @focus="generateValueTableData()">
+            <el-select v-model="SYear" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;" @focus="generateValueTableData()">
               <el-option
                 v-for="item in year"
                 :key="item.value"
@@ -20,11 +20,11 @@
                 :value="item.value"
               />
             </el-select>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="searchValueTableObj()">搜索</el-button>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="refreshTable()">刷新</el-button>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="newValueByMonthVisible = true; generateBioFeatureItemName()">按月输入</el-button>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="newValueByYearVisible = true; generateBioFeatureItemName()">按年输入</el-button>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="valueCacheTableVisible = true; generateValueCacheTableData()">查看输入缓存</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchValueTableObj()">搜索</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="refreshTable()">刷新</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="newValueByMonthVisible = true; generateBioFeatureItemName()">按月输入</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="newValueByYearVisible = true; generateBioFeatureItemName()">按年输入</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="valueCacheTableVisible = true; generateValueCacheTableData()">查看输入缓存</el-button>
             <!-- slice(start, end) 方法以新的数组对象，返回数组中被选中的元素。 -->
             <el-table
               :data="valueTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
@@ -456,7 +456,7 @@
           </el-tab-pane>
           <el-tab-pane label="查看单个指标信息(图表)" name="second">
             <div style="margin-top: 10px;">
-              <el-select v-model="singleItemForm.itemName" filterable clearable placeholder="请选择指标" style="width: 15%;" @focus="generateBioFeatureItemName()">
+              <el-select v-model="singleItemForm.itemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;" @focus="generateBioFeatureItemName()">
                 <el-option
                   v-for="item in bioFeatureItemNameList"
                   :key="item.value"
@@ -464,7 +464,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="singleItemForm.year" filterable clearable placeholder="请选择年份" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="singleItemForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -472,7 +472,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="singleItemEchartShape" filterable clearable placeholder="请选择图表类型" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="singleItemEchartShape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in shapeList"
                   :key="item.value"
@@ -480,7 +480,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="singleItemColor" filterable clearable placeholder="请选择图表类型" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="singleItemColor" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in colorList"
                   :key="item.value"
@@ -488,13 +488,13 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-button type="primary" style="margin-left: 20px;" @click="searchSingleItemInfo()">搜索</el-button>
+              <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchSingleItemInfo()">搜索</el-button>
             </div>
             <div ref="single_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
           </el-tab-pane>
           <el-tab-pane label="查看组合指标信息（图表）" name="third">
             <div style="margin-top: 10px;">
-              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" filterable clearable placeholder="请选择指标" style="width: 15%;">
+              <el-select v-model="searchCombinedBioFeatureForm.combinedBioFeatureName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;">
                 <el-option
                   v-for="item in combinedBioFeatureNameList"
                   :key="item.value"
@@ -502,7 +502,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="searchCombinedBioFeatureForm.year" filterable clearable placeholder="请选择年份" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="searchCombinedBioFeatureForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -510,7 +510,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="shape" filterable clearable placeholder="请选择图表类型" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="shape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in shapeList"
                   :key="item.value"
@@ -518,7 +518,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="combinedItemColor" filterable clearable placeholder="请选择图表颜色" style="width: 15%; margin-left: 30px;">
+              <el-select v-model="combinedItemColor" size="mini" filterable clearable placeholder="请选择图表颜色" style="width: 12%; margin-left: 5px;">
                 <el-option
                   v-for="item in colorList"
                   :key="item.value"
@@ -526,7 +526,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-button type="primary" style="margin-left: 20px;" @click="searchCombinedBioFeature()">搜索</el-button>
+              <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchCombinedBioFeature()">搜索</el-button>
             </div>
             <div ref="bio_feature_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
           </el-tab-pane>
@@ -1057,7 +1057,8 @@ export default {
           x: 'left'
         },
         legend: {
-          data: [item_name]
+          data: [item_name],
+          right: '35'
         },
         tooltip: {
           formatter: item_name + '<br />' + '{b}: {c}%'
@@ -1202,7 +1203,19 @@ export default {
       }
       var tempTableData = this.valueTableData
       this.valueTableData = []
-      for (var i = 0; i < tempTableData.length; i++) {
+      var i
+      if (that.SItemName !== '' && that.SYear !== '') {
+        for (i = 0; i < tempTableData.length; i++) {
+          // eslint-disable-next-line eqeqeq
+          if (tempTableData[i].itemName == that.SItemName && tempTableData[i].year == that.SYear) {
+            that.valueTableData.push(tempTableData[i])
+          }
+        }
+        this.SItemName = ''
+        this.SYear = ''
+        return
+      }
+      for (i = 0; i < tempTableData.length; i++) {
         // eslint-disable-next-line eqeqeq
         if (tempTableData[i].itemName == that.SItemName) {
           that.valueTableData.push(tempTableData[i])

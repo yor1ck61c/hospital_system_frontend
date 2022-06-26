@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" type="border-card" style="margin-left: 40px; margin-top: 30px; width: 1250px;">
           <el-tab-pane label="单个指标信息统计" name="first">
             <div>
-              <el-select v-model="countSingleVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 8%; margin-left: 5px;">
+              <el-select v-model="countSingleVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in singleItemNameList"
                   :key="item.itemName"
@@ -13,7 +13,7 @@
                   :value="item.itemName"
                 />
               </el-select>
-              <el-select v-model="countSingleVO.year" size="mini" filterable clearable placeholder="选择年份" style="width: 8%; margin-left: 5px;">
+              <el-select v-model="countSingleVO.year" size="mini" filterable clearable placeholder="选择年份" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -21,7 +21,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="countSingleVO.startMonth" size="mini" filterable clearable placeholder="起始月份" style="width: 8%; margin-left: 5px;">
+              <el-select v-model="countSingleVO.startMonth" size="mini" filterable clearable placeholder="起始月份" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in month"
                   :key="item.value"
@@ -29,7 +29,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="countSingleVO.endMonth" size="mini" filterable clearable placeholder="结束月份" style="width: 8%; margin-left: 5px;">
+              <el-select v-model="countSingleVO.endMonth" size="mini" filterable clearable placeholder="结束月份" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in month"
                   :key="item.value"
@@ -37,6 +37,8 @@
                   :value="item.value"
                 />
               </el-select>
+            </div>
+            <div style="margin-top: 10px;">
               <el-select v-model="countSingleVO.centerId" size="mini" filterable clearable placeholder="选择中心名称" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in centerInfoList"
@@ -141,6 +143,8 @@
                   :value="item.value"
                 />
               </el-select>
+            </div>
+            <div style="margin-top: 10px;">
               <el-select v-model="countCombinedVO.centerId" size="mini" filterable clearable placeholder="选择中心名称" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in centerInfoList"
@@ -590,7 +594,7 @@ export default {
       }
       // 转换成浮点数
       var totalData = {
-        hospitalName: '总计',
+        hospitalName: '湖南省主中心',
         numeratorValue: totalNumeratorValue,
         denominatorValue: totalDenominatorValue,
         result: totalDenominatorValue === 0 ? 0 : parseFloat((totalNumeratorValue / totalDenominatorValue * ratio).toFixed(2))
@@ -631,7 +635,7 @@ export default {
         that.combinedItemTableData.push(tempItem)
       }
       var totalItem = {
-        hospitalName: '总计',
+        hospitalName: '湖南省主中心',
         numeratorValue: totalNumeratorValue,
         denominatorValue: totalDenominatorValue,
         result: totalDenominatorValue === 0 ? 0 : parseFloat((totalNumeratorValue / totalDenominatorValue * ratio).toFixed(2))
@@ -640,6 +644,9 @@ export default {
     },
     // 计算单个医院某月到某月的数据
     calculateValueByMonth(value, startMonth, endMonth) {
+      if (value == null) {
+        return 0
+      }
       var start = this.parseMonthIntoNum(startMonth)
       var end = this.parseMonthIntoNum(endMonth)
       var result = 0
@@ -813,8 +820,14 @@ export default {
             type: 'shadow'
           }
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
-          right: 80
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
@@ -827,13 +840,18 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: hospitalNameList
+          data: hospitalNameList,
+          axisLabel: {
+            // x轴文字的配置
+            show: true,
+            interval: 0, // 使x轴文字显示全
+            rotate: 60
+          }
         },
         series: [
           {
             name: that.countSingleVO.itemName,
             type: 'bar',
-            barWidth: 80,
             color: '#40d286',
             data: valueList
           }
@@ -870,8 +888,14 @@ export default {
             type: 'shadow'
           }
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
-          right: 80
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
@@ -889,13 +913,18 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: hospitalNameList
+          data: hospitalNameList,
+          axisLabel: {
+            // x轴文字的配置
+            show: true,
+            interval: 0, // 使x轴文字显示全
+            rotate: 60
+          }
         },
         series: [
           {
             name: that.countCombinedVO.itemName,
             type: 'bar',
-            barWidth: 80,
             color: '#40d286',
             data: valueList
           }

@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div>
-        <el-select v-model="hospitalName" filterable clearable placeholder="请选择医院" style="width: 15%;  margin-top: 30px;" @focus="getAcccountInfoTableData">
+        <el-select v-model="hospitalName" size="mini" filterable clearable placeholder="请选择医院" style="width: 15%;  margin-top: 30px;" @focus="getAcccountInfoTableData">
           <el-option
             v-for="item in hospitalNameList"
             :key="item.value"
@@ -10,15 +10,15 @@
             :value="item.value"
           />
         </el-select>
-        <el-button type="primary" style="margin-left: 30px;" @click="searchHospital(hospitalName)">搜索</el-button>
-        <el-button type="primary" style="margin-left: 30px;" @click="goToRegisterPage()">新增用户</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 10px;" @click="searchHospital(hospitalName)">搜索</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 10px;" @click="goToRegisterPage()">新增用户</el-button>
       </div>
     </el-header>
     <el-main>
       <el-table
         :data="acccountInfoTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         border
-        style="margin-top: 30px;"
+        style="margin-top: 10px;"
       >
         <el-table-column
           prop="id"

@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" type="border-card" style="margin-left: 40px; margin-top: 30px; width: 1250px;" @tab-click="handleClick">
           <el-tab-pane label="单个指标信息对比" name="first">
             <div>
-              <el-select v-model="compareSingleVO.itemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 22%; margin-left: 5px;">
+              <el-select v-model="compareSingleVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in singleItemNameList"
                   :key="item.itemName"
@@ -13,12 +13,12 @@
                   :value="item.itemName"
                 />
               </el-select>
-              <el-button type="primary" style="margin-left: 15px;" size="mini" @click="compareSingleItem()">搜索</el-button>
+              <el-button type="primary" style="margin-left: 5px;" size="mini" @click="compareSingleItem()">搜索</el-button>
               <el-button type="primary" style="margin-left: 5px;" size="mini" @click="openSingleItemEchartDialog()">生成图表</el-button>
               <el-button type="success" size="mini" style="margin-left: 5px" @click="exportExcelForSingleItem(compareSingleVO.itemName)">导出Excel</el-button>
             </div>
             <div style="margin-top: 10px;">
-              <el-select v-model="compareSingleVO.compareObjTypeA" size="mini" filterable clearable placeholder="对比对象类型" style="width: 12%; margin-left: 5px;" @focus="clearCompareObj('single', 'A')">
+              <el-select v-model="compareSingleVO.compareObjTypeA" size="mini" filterable clearable placeholder="对比对象类型" style="width: 10%; margin-left: 5px;" @focus="clearCompareObj('single', 'A')">
                 <el-option
                   v-for="item in compareObjTypeList"
                   :key="item.value"
@@ -26,7 +26,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeA != 'province'" v-model="compareSingleVO.compareObjA" size="mini" filterable clearable placeholder="对比对象" style="width: 12%; margin-left: 5px;" @focus="generateSingleItemCompareObj('A')">
+              <el-select v-if="compareSingleVO.compareObjTypeA != 'province'" v-model="compareSingleVO.compareObjA" size="mini" filterable clearable placeholder="对比对象" style="width: 8%; margin-left: 5px;" @focus="generateSingleItemCompareObj('A')">
                 <el-option
                   v-for="item in compareObjAList"
                   :key="item.value"
@@ -34,7 +34,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="compareSingleVO.yearA" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="compareSingleVO.yearA" size="mini" filterable clearable placeholder="选择年份" style="width: 8%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -58,7 +58,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeA != 'hospital'" v-model="compareSingleVO.hospitalLevelA" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareSingleVO.compareObjTypeA != 'hospital'" v-model="compareSingleVO.hospitalLevelA" size="mini" filterable clearable placeholder="选择医院等级" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalLevelOptions"
                   :key="item.value"
@@ -66,7 +66,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeA != 'hospital'" v-model="compareSingleVO.hospitalTypeA" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareSingleVO.compareObjTypeA != 'hospital'" v-model="compareSingleVO.hospitalTypeA" size="mini" filterable clearable placeholder="选择医院类型" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalTypeOptions"
                   :key="item.value"
@@ -84,7 +84,7 @@
               </el-select> -->
             </div>
             <div style="margin-top: 10px;">
-              <el-select v-model="compareSingleVO.compareObjTypeB" size="mini" filterable clearable placeholder="对比对象类型" style="width: 12%; margin-left: 5px;" @focus="clearCompareObj('single', 'B')">
+              <el-select v-model="compareSingleVO.compareObjTypeB" size="mini" filterable clearable placeholder="对比对象类型" style="width: 10%; margin-left: 5px;" @focus="clearCompareObj('single', 'B')">
                 <el-option
                   v-for="item in compareObjTypeList"
                   :key="item.value"
@@ -92,7 +92,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeB != 'province'" v-model="compareSingleVO.compareObjB" size="mini" filterable clearable placeholder="对比对象" style="width: 12%; margin-left: 5px;" @focus="generateSingleItemCompareObj('B')">
+              <el-select v-if="compareSingleVO.compareObjTypeB != 'province'" v-model="compareSingleVO.compareObjB" size="mini" filterable clearable placeholder="对比对象" style="width: 8%; margin-left: 5px;" @focus="generateSingleItemCompareObj('B')">
                 <el-option
                   v-for="item in compareObjBList"
                   :key="item.value"
@@ -100,7 +100,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="compareSingleVO.yearB" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="compareSingleVO.yearB" size="mini" filterable clearable placeholder="选择年份" style="width: 8%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -124,7 +124,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeB != 'hospital'" v-model="compareSingleVO.hospitalLevelB" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareSingleVO.compareObjTypeB != 'hospital'" v-model="compareSingleVO.hospitalLevelB" size="mini" filterable clearable placeholder="选择医院等级" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalLevelOptions"
                   :key="item.value"
@@ -132,7 +132,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareSingleVO.compareObjTypeB != 'hospital'" v-model="compareSingleVO.hospitalTypeB" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareSingleVO.compareObjTypeB != 'hospital'" v-model="compareSingleVO.hospitalTypeB" size="mini" filterable clearable placeholder="选择医院类型" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalTypeOptions"
                   :key="item.value"
@@ -177,7 +177,7 @@
           </el-tab-pane>
           <el-tab-pane label="组合指标信息对比" name="second">
             <div>
-              <el-select v-model="typeId" size="mini" filterable clearable placeholder="请选择指标类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-model="typeId" size="mini" filterable clearable placeholder="选择指标类型" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in typeList"
                   :key="item.typeId"
@@ -185,7 +185,7 @@
                   :value="item.typeId"
                 />
               </el-select>
-              <el-select v-model="compareCombinedVO.itemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 22%; margin-left: 5px;" @focus="generateCombinedItemNameList">
+              <el-select v-model="compareCombinedVO.itemName" size="mini" filterable clearable placeholder="选择指标" style="width: 8%; margin-left: 5px;" @focus="generateCombinedItemNameList">
                 <el-option
                   v-for="item in combinedItemNameList"
                   :key="item.itemName"
@@ -193,12 +193,12 @@
                   :value="item.itemName"
                 />
               </el-select>
-              <el-button type="primary" style="margin-left: 15px;" size="mini" @click="compareCombinedItem()">搜索</el-button>
+              <el-button type="primary" style="margin-left: 5px;" size="mini" @click="compareCombinedItem()">搜索</el-button>
               <el-button type="primary" style="margin-left: 5px;" size="mini" @click="openCombinedItemEchartDialog()">生成图表</el-button>
               <el-button type="success" size="mini" style="margin-left: 5px" @click="exportExcelForCombinedItem(compareCombinedVO.itemName)">导出Excel</el-button>
             </div>
             <div style="margin-top: 10px;">
-              <el-select v-model="compareCombinedVO.compareObjTypeA" size="mini" filterable clearable placeholder="对比对象类型" style="width: 12%; margin-left: 5px;" @focus="clearCompareObj('combined', 'A')">
+              <el-select v-model="compareCombinedVO.compareObjTypeA" size="mini" filterable clearable placeholder="对比对象类型" style="width: 10%; margin-left: 5px;" @focus="clearCompareObj('combined', 'A')">
                 <el-option
                   v-for="item in compareObjTypeList"
                   :key="item.value"
@@ -206,7 +206,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeA != 'province'" v-model="compareCombinedVO.compareObjA" size="mini" filterable clearable placeholder="对比对象" style="width: 12%; margin-left: 5px;" @focus="generateCombinedItemCompareObj('A')">
+              <el-select v-if="compareCombinedVO.compareObjTypeA != 'province'" v-model="compareCombinedVO.compareObjA" size="mini" filterable clearable placeholder="对比对象" style="width: 8%; margin-left: 5px;" @focus="generateCombinedItemCompareObj('A')">
                 <el-option
                   v-for="item in compareObjAList"
                   :key="item.value"
@@ -214,7 +214,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="compareCombinedVO.yearA" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="compareCombinedVO.yearA" size="mini" filterable clearable placeholder="选择年份" style="width: 8%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -238,7 +238,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeA != 'hospital'" v-model="compareCombinedVO.hospitalLevelA" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareCombinedVO.compareObjTypeA != 'hospital'" v-model="compareCombinedVO.hospitalLevelA" size="mini" filterable clearable placeholder="选择医院等级" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalLevelOptions"
                   :key="item.value"
@@ -246,7 +246,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeA != 'hospital'" v-model="compareCombinedVO.hospitalTypeA" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareCombinedVO.compareObjTypeA != 'hospital'" v-model="compareCombinedVO.hospitalTypeA" size="mini" filterable clearable placeholder="选择医院类型" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalTypeOptions"
                   :key="item.value"
@@ -264,7 +264,7 @@
               </el-select> -->
             </div>
             <div style="margin-top: 10px;">
-              <el-select v-model="compareCombinedVO.compareObjTypeB" size="mini" filterable clearable placeholder="对比对象类型" style="width: 12%; margin-left: 5px;" @focus="clearCompareObj('combined', 'B')">
+              <el-select v-model="compareCombinedVO.compareObjTypeB" size="mini" filterable clearable placeholder="对比对象类型" style="width: 10%; margin-left: 5px;" @focus="clearCompareObj('combined', 'B')">
                 <el-option
                   v-for="item in compareObjTypeList"
                   :key="item.value"
@@ -272,7 +272,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeB != 'province'" v-model="compareCombinedVO.compareObjB" size="mini" filterable clearable placeholder="对比对象" style="width: 12%; margin-left: 5px;" @focus="generateCombinedItemCompareObj('B')">
+              <el-select v-if="compareCombinedVO.compareObjTypeB != 'province'" v-model="compareCombinedVO.compareObjB" size="mini" filterable clearable placeholder="对比对象" style="width: 8%; margin-left: 5px;" @focus="generateCombinedItemCompareObj('B')">
                 <el-option
                   v-for="item in compareObjBList"
                   :key="item.value"
@@ -280,7 +280,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="compareCombinedVO.yearB" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
+              <el-select v-model="compareCombinedVO.yearB" size="mini" filterable clearable placeholder="选择年份" style="width: 8%; margin-left: 5px;">
                 <el-option
                   v-for="item in year"
                   :key="item.value"
@@ -304,7 +304,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeB != 'hospital'" v-model="compareCombinedVO.hospitalLevelB" size="mini" filterable clearable placeholder="请选择医院等级" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareCombinedVO.compareObjTypeB != 'hospital'" v-model="compareCombinedVO.hospitalLevelB" size="mini" filterable clearable placeholder="选择医院等级" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalLevelOptions"
                   :key="item.value"
@@ -312,7 +312,7 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-if="compareCombinedVO.compareObjTypeB != 'hospital'" v-model="compareCombinedVO.hospitalTypeB" size="mini" filterable clearable placeholder="请选择医院类型" style="width: 12%; margin-left: 5px;">
+              <el-select v-if="compareCombinedVO.compareObjTypeB != 'hospital'" v-model="compareCombinedVO.hospitalTypeB" size="mini" filterable clearable placeholder="选择医院类型" style="width: 10%; margin-left: 5px;">
                 <el-option
                   v-for="item in hospitalTypeOptions"
                   :key="item.value"
@@ -900,8 +900,14 @@ export default {
             type: 'shadow'
           }
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
-          right: 80
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
@@ -959,8 +965,14 @@ export default {
             type: 'shadow'
           }
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
-          right: 80
+          left: 0,
+          top: 28
         },
         grid: {
           left: '3%',
@@ -1011,7 +1023,7 @@ export default {
       var numeratorValueA = that.calculateValueByMonth(objAData[0], that.compareCombinedVO.startMonthA, that.compareCombinedVO.endMonthA)
       var denominatorValueA = that.calculateValueByMonth(objAData[1], that.compareCombinedVO.startMonthA, that.compareCombinedVO.endMonthA)
       var objATableData = {
-        compareObjName: compareObjA,
+        compareObjName: that.compareCombinedVO.yearA + '年' + that.parseMonthIntoNum(that.compareCombinedVO.startMonthA) + '月-' + that.parseMonthIntoNum(that.compareCombinedVO.endMonthA) + '月' + compareObjA,
         numeratorValue: numeratorValueA,
         denominatorValue: denominatorValueA,
         result: denominatorValueA === 0 ? 0 : parseInt(numeratorValueA / denominatorValueA * ratio)
@@ -1020,7 +1032,7 @@ export default {
       var numeratorValueB = that.calculateValueByMonth(objBData[0], that.compareCombinedVO.startMonthB, that.compareCombinedVO.endMonthB)
       var denominatorValueB = that.calculateValueByMonth(objBData[1], that.compareCombinedVO.startMonthB, that.compareCombinedVO.endMonthB)
       var objBTableData = {
-        compareObjName: compareObjB,
+        compareObjName: that.compareCombinedVO.yearB + '年' + that.parseMonthIntoNum(that.compareCombinedVO.startMonthB) + '月-' + that.parseMonthIntoNum(that.compareCombinedVO.endMonthB) + '月' + compareObjB,
         numeratorValue: numeratorValueB,
         denominatorValue: denominatorValueB,
         result: denominatorValueB === 0 ? 0 : parseInt(numeratorValueB / denominatorValueB * ratio)
@@ -1034,7 +1046,7 @@ export default {
       var objAName = Object.keys(objA)[0]
       var dataA = this.calculateValueByMonth(objA[objAName], this.compareSingleVO.startMonthA, this.compareSingleVO.endMonthA)
       var tableDataA = {
-        hospitalName: Object.keys(objA)[0],
+        hospitalName: that.compareSingleVO.yearA + '年' + that.parseMonthIntoNum(that.compareSingleVO.startMonthA) + '月~' + that.parseMonthIntoNum(that.compareSingleVO.endMonthA) + '月' + Object.keys(objA)[0],
         singleItemValue: dataA,
         singleItemAverageValue: parseInt(dataA / (that.parseMonthIntoNum(that.compareSingleVO.endMonthA) - that.parseMonthIntoNum(that.compareSingleVO.startMonthA) + 1))
       }
@@ -1042,7 +1054,7 @@ export default {
       var objBName = Object.keys(objB)[0]
       var dataB = this.calculateValueByMonth(objB[objBName], this.compareSingleVO.startMonthB, this.compareSingleVO.endMonthB)
       var tableDataB = {
-        hospitalName: Object.keys(objB)[0],
+        hospitalName: that.compareSingleVO.yearB + '年' + that.parseMonthIntoNum(that.compareSingleVO.startMonthB) + '月~' + that.parseMonthIntoNum(that.compareSingleVO.endMonthB) + '月' + Object.keys(objB)[0],
         singleItemValue: dataB,
         singleItemAverageValue: parseInt(dataB / (that.parseMonthIntoNum(that.compareSingleVO.endMonthB) - that.parseMonthIntoNum(that.compareSingleVO.startMonthB) + 1))
       }
@@ -1077,6 +1089,9 @@ export default {
     },
     // 计算单个医院某月到某月的数据
     calculateValueByMonth(value, startMonth, endMonth) {
+      if (value == null) {
+        return 0
+      }
       var start = this.parseMonthIntoNum(startMonth)
       var end = this.parseMonthIntoNum(endMonth)
       var result = 0

@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div>
-        <el-select v-model="hospitalName" filterable clearable placeholder="请选择医院" style="width: 20%; margin-left: 50px; margin-top: 30px;" @focus="generateOtherHospitalData">
+        <el-select v-model="hospitalName" size="mini" filterable clearable placeholder="请选择医院" style="width: 10%; margin-left: 50px; margin-top: 30px;" @focus="generateOtherHospitalData">
           <el-option
             v-for="item in hospitalTableData"
             :key="item.id"
@@ -10,14 +10,14 @@
             :value="item.hospitalName"
           />
         </el-select>
-        <el-button type="primary" style="margin-left: 20px;" @click="searchHospital()">搜索</el-button>
+        <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchHospital()">搜索</el-button>
       </div>
     </el-header>
     <el-main>
       <el-table
         :data="hospitalTableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         border
-        style="width: 700px; margin-left: 50px;margin-top: 20px;"
+        style="width: 700px; margin-left: 50px;"
       >
         <el-table-column
           prop="hospitalName"
@@ -59,7 +59,7 @@
     >
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 30px; width: 1250px;" @tab-click="handleClick">
         <el-tab-pane label="查看指标信息（表格）" name="first">
-          <el-select v-model="SItemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;" @focus="generateBioFeatureItemName">
+          <el-select v-model="SItemName" size="mini" filterable clearable placeholder="请选择指标" style="width: 10%;" @focus="generateBioFeatureItemName(); generateValueTableData()">
             <el-option
               v-for="item in bioFeatureItemNameList"
               :key="item.value"
@@ -67,7 +67,7 @@
               :value="item.value"
             />
           </el-select>
-          <el-select v-model="SYear" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 30px;" @focus="generateValueTableData">
+          <el-select v-model="SYear" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;" @focus="generateValueTableData()">
             <el-option
               v-for="item in year"
               :key="item.value"
@@ -75,7 +75,7 @@
               :value="item.value"
             />
           </el-select>
-          <el-button type="primary" size="mini" style="margin-left: 20px;" @click="searchValueTableObj()">搜索</el-button>
+          <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchValueTableObj()">搜索</el-button>
           <!-- slice(start, end) 方法以新的数组对象，返回数组中被选中的元素。 -->
           <el-table
             :data="valueTableData.slice((currentPage2 - 1) * pagesize2, currentPage2 * pagesize2)"
@@ -238,7 +238,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="singleItemForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="singleItemForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in year"
                 :key="item.value"
@@ -246,7 +246,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="singleItemEchartShape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="singleItemEchartShape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in shapeList"
                 :key="item.value"
@@ -254,7 +254,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="singleItemColor" size="mini" filterable clearable placeholder="请选择图表颜色" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="singleItemColor" size="mini" filterable clearable placeholder="请选择图表颜色" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in colorList"
                 :key="item.value"
@@ -262,7 +262,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="searchSingleItemInfo()">搜索</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchSingleItemInfo()">搜索</el-button>
           </div>
           <div ref="single_item_chart" style="width: 1000px; height: 500px; margin-top: 20px;" />
         </el-tab-pane>
@@ -276,7 +276,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="searchCombinedBioFeatureForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="searchCombinedBioFeatureForm.year" size="mini" filterable clearable placeholder="请选择年份" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in year"
                 :key="item.value"
@@ -284,7 +284,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="shape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="shape" size="mini" filterable clearable placeholder="请选择图表类型" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in shapeList"
                 :key="item.value"
@@ -292,7 +292,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-select v-model="combinedItemColor" size="mini" filterable clearable placeholder="请选择图表颜色" style="width: 10%; margin-left: 20px;">
+            <el-select v-model="combinedItemColor" size="mini" filterable clearable placeholder="请选择图表颜色" style="width: 10%; margin-left: 5px;">
               <el-option
                 v-for="item in colorList"
                 :key="item.value"
@@ -300,7 +300,7 @@
                 :value="item.value"
               />
             </el-select>
-            <el-button type="primary" size="mini" style="margin-left: 20px;" @click="searchCombinedBioFeature()">搜索</el-button>
+            <el-button type="primary" size="mini" style="margin-left: 5px;" @click="searchCombinedBioFeature()">搜索</el-button>
           </div>
           <div ref="bio_feature_item_chart" style="width: 1000px; height: 500px; margin-top: 50px;margin-left: 150px;" />
         </el-tab-pane>
@@ -497,10 +497,11 @@ export default {
         that.valueTableData = data
       })
     },
-    // 寻找指标值数据表中的某一项
+    // 寻找指标值数据表中的数据
     searchValueTableObj() {
+      var that = this
       // eslint-disable-next-line no-empty
-      if (this.SItemName === '' || this.SYear === '') {
+      if (this.SItemName === '' && this.SYear === '') {
         Message({
           message: '请先选择指标或年份！',
           type: 'error'
@@ -508,13 +509,28 @@ export default {
         this.generateValueTableData()
         return
       }
-      for (var i = 0; i < this.valueTableData.length; i++) {
+      var tempTableData = this.valueTableData
+      this.valueTableData = []
+      var i
+      if (that.SItemName !== '' && that.SYear !== '') {
+        for (i = 0; i < tempTableData.length; i++) {
+          // eslint-disable-next-line eqeqeq
+          if (tempTableData[i].itemName == that.SItemName && tempTableData[i].year == that.SYear) {
+            that.valueTableData.push(tempTableData[i])
+          }
+        }
+        this.SItemName = ''
+        this.SYear = ''
+        return
+      }
+      for (i = 0; i < tempTableData.length; i++) {
         // eslint-disable-next-line eqeqeq
-        if (this.valueTableData[i].itemName === this.SItemName && this.valueTableData[i].year == this.SYear) {
-          var obj = this.valueTableData[i]
-          this.valueTableData = []
-          this.valueTableData.push(obj)
-          break
+        if (tempTableData[i].itemName == that.SItemName) {
+          that.valueTableData.push(tempTableData[i])
+        }
+        // eslint-disable-next-line eqeqeq
+        if (tempTableData[i].year == that.SYear) {
+          that.valueTableData.push(tempTableData[i])
         }
       }
       this.SItemName = ''
@@ -725,6 +741,7 @@ export default {
           }
         },
         legend: {
+          right: '35'
         },
         xAxis: {
           data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
@@ -759,7 +776,8 @@ export default {
           x: 'left'
         },
         legend: {
-          data: [item_name]
+          data: [item_name],
+          right: '35'
         },
         toolbox: {
           feature: {
@@ -787,7 +805,8 @@ export default {
           x: 'left'
         },
         legend: {
-          data: [item_name]
+          data: [item_name],
+          right: '35'
         },
         tooltip: {},
         toolbox: {
@@ -821,7 +840,8 @@ export default {
           x: 'left'
         },
         legend: {
-          data: [item_name]
+          data: [item_name],
+          right: '35'
         },
         tooltip: {},
         toolbox: {
