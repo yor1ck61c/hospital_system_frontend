@@ -10,7 +10,7 @@
             :value="item.centerId"
           />
         </el-select>
-        <el-select v-model="hospitalName" size="mini" filterable clearable placeholder="请选择医院" style="width: 12%; margin-left: 20px; margin-top: 30px;" @focus="generateHosptialNameList">
+        <el-select v-model="hospitalName" size="mini" filterable clearable placeholder="请选择医院" style="width: 12%; margin-left: 20px; margin-top: 30px;" @focus="generateHosptialNameList()">
           <el-option
             v-for="item in hospitalNameList"
             :key="item.id"
@@ -73,7 +73,7 @@
               :value="item.centerId"
             />
           </el-select>
-          <el-select v-model="grantInfoForm.otherHospitalUserId" filterable clearable placeholder="请选择授予查看权限的医院" style="width: 30%; margin-left: 50px; margin-top: 30px;" @focus="generateHosptialNameList2">
+          <el-select v-model="grantInfoForm.otherHospitalUserId" filterable clearable placeholder="请选择授予查看权限的医院" style="width: 30%; margin-left: 50px; margin-top: 30px;" @focus="generateHosptialNameList2()">
             <el-option
               v-for="item in hospitalNameList2"
               :key="item.id"

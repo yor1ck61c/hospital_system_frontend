@@ -479,7 +479,8 @@ export default {
       // this.singleItemTableData.unshift(averageRow)
       // 总和
       var totalRow = {
-        hospitalName: '总和',
+        // eslint-disable-next-line eqeqeq
+        hospitalName: that.countSingleVO.centerId == 0 || that.countSingleVO.centerId == '' ? '湖南省主中心' : that.centerInfoList.find(item => item.centerId == that.countSingleVO.centerId).centerName,
         singleItemValue: totalValue,
         singleItemAverageValue: parseInt(totalValue / (valueList.length + (that.parseMonthIntoNum(this.countSingleVO.endMonth) - that.parseMonthIntoNum(this.countSingleVO.startMonth) + 1)))
       }
@@ -512,9 +513,9 @@ export default {
       // this.singleItemTableData.unshift(averageRow)
       // 总和
       var totalRow = {
-        hospitalName: '各分中心平均值',
+        hospitalName: '湖南省主中心',
         singleItemValue: totalValue,
-        singleItemAverageValue: parseInt(totalValue / (keys.length + (this.parseMonthIntoNum(this.countSingleVO.endMonth) - this.parseMonthIntoNum(this.countSingleVO.startMonth) + 1)))
+        singleItemAverageValue: parseInt(totalValue / (keys.length - 1 + (this.parseMonthIntoNum(this.countSingleVO.endMonth) - this.parseMonthIntoNum(this.countSingleVO.startMonth) + 1)))
       }
       this.singleItemTableData.unshift(totalRow)
     },
@@ -594,7 +595,8 @@ export default {
       }
       // 转换成浮点数
       var totalData = {
-        hospitalName: '湖南省主中心',
+        // eslint-disable-next-line eqeqeq
+        hospitalName: that.countCombinedVO.centerId == 0 || that.countCombinedVO.centerId == '' ? '湖南省主中心' : that.centerInfoList.find(item => item.centerId == that.countCombinedVO.centerId).centerName,
         numeratorValue: totalNumeratorValue,
         denominatorValue: totalDenominatorValue,
         result: totalDenominatorValue === 0 ? 0 : parseFloat((totalNumeratorValue / totalDenominatorValue * ratio).toFixed(2))

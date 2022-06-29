@@ -53,9 +53,9 @@ export function deleteItem(data) {
   })
 }
 
-export function getCombinedItemNameTableData() {
+export function getCombinedItemTableData() {
   return request({
-    url: '/bio_feature/combined_list',
+    url: '/bio_feature/combined_item_info',
     method: 'get'
   })
 }
@@ -70,7 +70,7 @@ export function deleteCombinedItem(data) {
 
 export function addCombinedItem(data) {
   return request({
-    url: '/bio_feature/add_combined',
+    url: '/bio_feature/add_combined_item',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -152,6 +152,22 @@ export function getSingleItemData(data) {
 export function batchCommitValueCacheByHospitalName(data) {
   return request({
     url: '/bio_feature/batch_commit_cache',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function updateCombinedItem(data) {
+  return request({
+    url: '/bio_feature/update_combined_item',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
+export function updateSingleItem(data) {
+  return request({
+    url: '/bio_feature/update_single_item',
     method: 'post',
     data: JSON.stringify(data)
   })
